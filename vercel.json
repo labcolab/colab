@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/currentDateTime", "dest": "api/date.go" }
+  ]
+}

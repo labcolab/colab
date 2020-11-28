@@ -1,17 +1,15 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import './App.css';
 
-interface AppProps { };
-
-const App = ({}: AppProps) => {
+const App = () => {
   const [date, setDate] = useState<string>('');
   useEffect(() => {
     const getDate = async () => {
       const res = await fetch('/api/date');
       const newDate = await res.text();
       setDate(newDate);
-    }
+    };
     getDate();
   }, []);
   return (
@@ -41,9 +39,9 @@ const App = ({}: AppProps) => {
           Create React App
         </a>{' '}
         and contains three directories, <code>/public</code> for static assets,{' '}
-        <code>/src</code> for components and content, and <code>/api</code>{' '}
-        which contains a serverless <a href="https://golang.org/">Go</a>{' '}
-        function. See{' '}
+        <code>/src</code> for components and content, and
+        <code>/api</code> which contains a serverless{' '}
+        <a href="https://golang.org/">Go</a> function. See{' '}
         <a href="/api/date">
           <code>api/date</code> for the Date API with Go
         </a>
@@ -51,9 +49,9 @@ const App = ({}: AppProps) => {
       </p>
       <br />
       <h2>The date according to Go is:</h2>
-      <p>{date ? date : 'Loading date...'}</p>
+      <p>{date || 'Loading date...'}</p>
     </main>
   );
-}
+};
 
 export default App;
