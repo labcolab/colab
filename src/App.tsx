@@ -1,40 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
-interface AppProps {}
+interface AppProps { };
 
-function App({}: AppProps) {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
+const App = ({}: AppProps) => {
+  const [date, setDate] = useState<string>('');
   useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
+    const getDate = async () => {
+      const res = await fetch('/api/date');
+      const newDate = await res.text();
+      setDate(newDate);
+    }
+    getDate();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
-    </div>
+    <main>
+      <h1>Create React App + Go API</h1>
+      <h2>
+        Deployed with{' '}
+        <a
+          href="https://vercel.com/docs"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Vercel
+        </a>
+        !
+      </h2>
+      <p>
+        <a
+          href="https://github.com/vercel/vercel/tree/master/examples/create-react-app"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          This project
+        </a>{' '}
+        was bootstrapped with{' '}
+        <a href="https://facebook.github.io/create-react-app/">
+          Create React App
+        </a>{' '}
+        and contains three directories, <code>/public</code> for static assets,{' '}
+        <code>/src</code> for components and content, and <code>/api</code>{' '}
+        which contains a serverless <a href="https://golang.org/">Go</a>{' '}
+        function. See{' '}
+        <a href="/api/date">
+          <code>api/date</code> for the Date API with Go
+        </a>
+        .
+      </p>
+      <br />
+      <h2>The date according to Go is:</h2>
+      <p>{date ? date : 'Loading date...'}</p>
+    </main>
   );
 }
 
