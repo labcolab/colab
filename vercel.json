@@ -2,7 +2,8 @@
   "version": 2,
   "routes": [
     { "src": "/currentDateTime", "dest": "api/date.go" },
-    {"src" : "/date/foo", "dest": "api/date.go"},
-    {"src" : "/date/bar", "dest": "api/date.go"}
+    { "src": "/date/foo", "dest": "api/date.go" },
+    { "src": "/date/bar", "dest": "api/date.go" },
+    { "src": "/date/(.*)", "dest": "api/date.go" }
   ]
 }
