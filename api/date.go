@@ -3,9 +3,9 @@ package date
 import (
 	"fmt"
 	"net/http"
+	"time"
 
-	"github.com/labcolab/colab/lib/handlers"
-	"github.com/labcolab/colab/lib/three"
+	rh "github.com/labcolab/colab/lib/handlers"
 )
 
 // /date/now --> now
@@ -13,22 +13,21 @@ import (
 
 //need to make it so that /date/* to go to one function --> need to condense subURLs!
 func Date(w http.ResponseWriter, r *http.Request) {
-	//todo switch
-	if r.URL.Path == "/date/foo" {
+	rh.HandleRequest("GET", "/date/foo", r, func() {
 		fmt.Fprintf(w, "foo!")
-	} else if r.URL.Path == "/date/bar" {
+	})
+
+	rh.HandleRequest("GET", "/date/bar", r, func() {
 		fmt.Fprintf(w, "bar!")
-	} else {
-		fmt.Fprintf(w, r.URL.Path)
-	}
+	})
 
-	fmt.Fprintf(w, "\n")
-	fmt.Fprintf(w, "%d", handlers.Two())
+	rh.HandleRequest("GET", "/currentDate", r, func() {
+		currentTime := time.Now().Format(time.RFC850)
+		fmt.Fprintf(w, currentTime)
+	})
 
-	fmt.Fprintf(w, three.Three())
-
-	// two.Two()
-
-	// currentTime := time.Now().Format(time.RFC850)
-	// fmt.Fprintf(w, currentTime)
+	rh.HandleRequest("GET", "/api/date", r, func() {
+		currentTime := time.Now().Format(time.RFC850)
+		fmt.Fprintf(w, currentTime)
+	})
 }
