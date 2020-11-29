@@ -28,7 +28,7 @@ func Date(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "hello!")
 	})
 
-	rh.Get("/currentDate", func() {
+	rh.Get("/currentDateTime", func() {
 		currentTime := time.Now().Format(time.RFC850)
 		fmt.Fprintf(w, currentTime)
 	})
