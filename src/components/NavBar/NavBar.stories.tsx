@@ -15,11 +15,5 @@ const Template: Story<NavBarProps> = (args) => (
   </ChakraProvider>
 );
 
-export const LoggedIn = Template.bind({});
-LoggedIn.args = {
-  user: 'Hello',
-  power: 3,
-};
-
-export const LoggedOut = Template.bind({});
-LoggedOut.args = {};
+export const Default = Template.bind({});
+Default.args = {};
