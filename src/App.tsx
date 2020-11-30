@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import './App.css';
 
+import { SmallView } from './components/ProjectBox/ProjectBox';
+
 const App = () => {
   const [date, setDate] = useState<string>('');
   useEffect(() => {
@@ -50,6 +52,7 @@ const App = () => {
       <br />
       <h2>The date according to Go is:</h2>
       <p>{date || 'Loading date...'}</p>
+      <SmallView text="Gokce" />
     </main>
   );
 };
