@@ -1,16 +1,19 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-
 import type { Story, Meta } from '@storybook/react';
-
+import { ChakraProvider } from '@chakra-ui/react';
 import NavBar, { NavBarProps } from './NavBar';
 
 export default {
-  title: 'NavBar',
+  title: 'Components/NavBar',
   component: NavBar,
 } as Meta;
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Template: Story<NavBarProps> = (args) => <NavBar {...args} />;
+const Template: Story<NavBarProps> = (args) => (
+  <ChakraProvider>
+    <NavBar {...args} />
+  </ChakraProvider>
+);
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {

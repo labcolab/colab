@@ -1,22 +1,30 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-
 import type { Story, Meta } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { ChakraProvider } from '@chakra-ui/react';
 
 import SearchBar, { SearchBarProps } from './SearchBar';
 
 export default {
-  title: 'SearchBar',
+  title: 'Components/SearchBar',
   component: SearchBar,
 } as Meta;
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Template: Story<SearchBarProps> = (args) => <SearchBar {...args} />;
+const Template: Story<SearchBarProps> = (args) => (
+  <ChakraProvider>
+    <SearchBar {...args} />
+  </ChakraProvider>
+);
 
-export const ABC = Template.bind({});
-ABC.args = {
-  user: 'Hello',
-  power: 3,
+export const ControlledWithoutText = Template.bind({});
+ControlledWithoutText.args = {
+  value: '',
+  onChange: action('onChange'),
 };
 
-export const XYZ = Template.bind({});
-XYZ.args = {};
+export const ControlledWithText = Template.bind({});
+ControlledWithText.args = {
+  ...ControlledWithoutText.args,
+  value: 'Hello',
+};
