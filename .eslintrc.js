@@ -5,5 +5,6 @@ module.exports = {
   },
   "rules": {
     "react/jsx-one-expression-per-line": "off",
+    "react/jsx-props-no-spreadin": "off",
   }
 };
