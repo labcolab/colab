@@ -21,6 +21,7 @@ const SearchBar = ({ onChange, value }: SearchBarProps) => {
       <StyledInput
         variant="unstyled"
         placeholder="Search"
+        size="lg"
         onChange={handleChange}
         value={value}
       />

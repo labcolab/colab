@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import type { Story, Meta } from '@storybook/react';
-import { ChakraProvider } from '@chakra-ui/react';
 
 import ProjectBox, { ProjectBoxProps } from './ProjectBox';
 
@@ -10,11 +9,7 @@ export default {
   component: ProjectBox,
 } as Meta;
 
-const Template: Story<ProjectBoxProps> = (args) => (
-  <ChakraProvider>
-    <ProjectBox {...args} />
-  </ChakraProvider>
-);
+const Template: Story<ProjectBoxProps> = (args) => <ProjectBox {...args} />;
 
 export const LargeProjectBox = Template.bind({});
 LargeProjectBox.args = {
