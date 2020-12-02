@@ -15,8 +15,8 @@ export const StyledInputGroup = styled(InputGroup)`
 
   svg {
     font-size: 1.2rem;
-    margin-top: 32px;
-    margin-right: 40px;
+    margin-top: 8px;
+    margin-right: 10px;
   };
 
   width: 500px;

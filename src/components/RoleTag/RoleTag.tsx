@@ -8,13 +8,11 @@ export interface RoleTagProps {
   color: string;
 }
 
-const RoleTag = ({ role, color }: RoleTagProps) => {
-  return (
-    <StyledTag size="sm" variant="outline" colorScheme={color}>
-      <TagLeftIcon boxSize="12px" as={AddIcon} />
-      <TagLabel>{role}</TagLabel>
-    </StyledTag>
-  );
-};
+const RoleTag = ({ role, color }: RoleTagProps) => (
+  <StyledTag size="sm" variant="subtle" colorScheme={color}>
+    <TagLeftIcon boxSize="12px" as={AddIcon} />
+    <TagLabel>{role}</TagLabel>
+  </StyledTag>
+);
 
 export default RoleTag;
