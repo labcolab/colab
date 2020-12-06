@@ -2,7 +2,6 @@
 import React from 'react';
 import type { Story, Meta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { ChakraProvider } from '@chakra-ui/react';
 
 import SearchBar, { SearchBarProps } from './SearchBar';
 
@@ -11,11 +10,7 @@ export default {
   component: SearchBar,
 } as Meta;
 
-const Template: Story<SearchBarProps> = (args) => (
-  <ChakraProvider>
-    <SearchBar {...args} />
-  </ChakraProvider>
-);
+const Template: Story<SearchBarProps> = (args) => <SearchBar {...args} />;
 
 export const ControlledWithoutText = Template.bind({});
 ControlledWithoutText.args = {
