@@ -1,56 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import HomePage from './pages/Home/Home';
+import WelcomePage from './pages/Welcome/Welcome';
+import CreateProjectPage from './pages/CreateProject/CreateProject';
+import TestPage from './pages/Test/Test';
+import Firestore from './services/firestore/firestore';
+import type firebase from 'firebase/app';
+import 'firebase/firestore';
 
-import './App.css';
+export const FirestoreContext = createContext<firebase.firestore.Firestore>(
+  Firestore,
+);
 
 const App = () => {
-  const [date, setDate] = useState<string>('');
-  useEffect(() => {
-    const getDate = async () => {
-      const res = await fetch('/api/date');
-      const newDate = await res.text();
-      setDate(newDate);
-    };
-    getDate();
-  }, []);
   return (
-    <main>
-      <h1>Create React App + Go API</h1>
-      <h2>
-        Deployed with{' '}
-        <a
-          href="https://vercel.com/docs"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          Vercel
-        </a>
-        !
-      </h2>
-      <p>
-        <a
-          href="https://github.com/vercel/vercel/tree/master/examples/create-react-app"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          This project
-        </a>{' '}
-        was bootstrapped with{' '}
-        <a href="https://facebook.github.io/create-react-app/">
-          Create React App
-        </a>{' '}
-        and contains three directories, <code>/public</code> for static assets,{' '}
-        <code>/src</code> for components and content, and
-        <code>/api</code> which contains a serverless{' '}
-        <a href="https://golang.org/">Go</a> function. See{' '}
-        <a href="/api/date">
-          <code>api/date</code> for the Date API with Go
-        </a>
-        .
-      </p>
-      <br />
-      <h2>The date according to Go is:</h2>
-      <p>{date || 'Loading date...'}</p>
-    </main>
+    <FirestoreContext.Provider value={Firestore}>
+      <Switch>
+        <Route exact path="/" component={WelcomePage} />
+        <Route path="/dashboard" component={HomePage} />
+        <Route path="/create" component={CreateProjectPage} />
+        <Route path="/test" component={TestPage} />
+      </Switch>
+    </FirestoreContext.Provider>
   );
 };
 

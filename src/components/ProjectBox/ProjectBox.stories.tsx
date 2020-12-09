@@ -14,7 +14,7 @@ const Template: Story<ProjectBoxProps> = (args) => <ProjectBox {...args} />;
 export const SmallProjectBox = Template.bind({});
 SmallProjectBox.args = {
   avatar: 'avatar',
-  name: 'name',
+  title: 'name',
   date: 'date',
   description:
     'this is the project preview! kjsblsjgldjblsdblsdblsbdlsjlsljdfblsjblsfls',
@@ -37,7 +37,7 @@ SmallProjectBox.args = {
 export const LargeProjectBox = Template.bind({});
 LargeProjectBox.args = {
   avatar: 'avatar',
-  name: 'name',
+  title: 'name',
   date: 'date',
   description:
     'this is the project preview! kjsblsjgldjblsdblsdblsbdlsjlsljdfblsjblsfls',

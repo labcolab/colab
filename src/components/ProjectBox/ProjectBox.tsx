@@ -4,7 +4,7 @@ import RoleTag, { RoleTagProps } from '../RoleTag/RoleTag';
 
 export interface ProjectBoxProps {
   avatar: string;
-  name: string;
+  title: string;
   date: string;
   description: string;
   roles: RoleTagProps[];
@@ -13,7 +13,7 @@ export interface ProjectBoxProps {
 
 const ProjectBox = ({
   avatar,
-  name,
+  title,
   date,
   description,
   roles,
@@ -36,7 +36,7 @@ const ProjectBox = ({
               src="https://bit.ly/dan-abramov" //use avatar
             />
           </WrapItem>
-          <WrapItem>{name}</WrapItem>
+          <WrapItem>{title}</WrapItem>
         </Wrap>
         <Text>{description}</Text>
         <Wrap spacing={3}>
