@@ -2,9 +2,9 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAUhcPFApoupkd8lg1J_J7M6qe8G0e9ilo',
-  authDomain: 'colab-dff8b.firebaseapp.com',
-  projectId: 'colab-dff8b',
+  apiKey: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_API_KEY,
+  authDomain: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
 };
 
 enum Collections {
