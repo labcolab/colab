@@ -7,7 +7,7 @@ import {
   Button,
   Select,
 } from '@chakra-ui/react';
-import { Form, Formik, Field } from 'formik';
+import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FirestoreContext } from '../../App';
 
@@ -29,8 +29,8 @@ const ProjectForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={Yup.object({
-        title: Yup.string().required('required'),
-        description: Yup.string().required('required'),
+        title: Yup.string().required('Please add a title'),
+        description: Yup.string().required('Please add a description'),
       })}
       onSubmit={async (values, { resetForm }) => {
         try {
@@ -49,31 +49,27 @@ const ProjectForm = () => {
       {(props) => (
         <Form>
           <Field name="title">
-            {({ field, form }) => (
-              <FormControl
-                isInvalid={form.touched.title && form.errors.title}
-                isRequired
-              >
+            {({ field, form }: FieldProps) => (
+              <FormControl isRequired>
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <Input {...field} id="title" size="sm" />
                 <FormErrorMessage>{form.errors.title}</FormErrorMessage>
               </FormControl>
             )}
           </Field>
+          <ErrorMessage name="title" />
           <Field name="description">
-            {({ field, form }) => (
-              <FormControl
-                isInvalid={form.touched.description && form.errors.description}
-                isRequired
-              >
+            {({ field, form }: FieldProps) => (
+              <FormControl isRequired>
                 <FormLabel htmlFor="description">Description</FormLabel>
                 <Input {...field} id="description" size="lg" />
                 <FormErrorMessage>{form.errors.description}</FormErrorMessage>
               </FormControl>
             )}
           </Field>
+          <ErrorMessage name="description" />
           <Field name="roles">
-            {({ field, form }) => (
+            {({ field, form }: FieldProps) => (
               <FormControl isRequired>
                 <FormLabel htmlFor="roles">Roles</FormLabel>
                 <Select {...field} id="roles" placeholder="Select role">
