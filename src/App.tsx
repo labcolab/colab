@@ -49,7 +49,7 @@ const App = () => {
       </p>
       <br />
       <h2>The date according to Go is:</h2>
-      <p>{date || 'Loading date...'}</p>
+      <p data-test-id={date && 'date'}>{date || 'Loading date...'}</p>
     </main>
   );
 };
