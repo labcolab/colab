@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import './App.css';
+import './Test.css';
 
-const App = () => {
+const TestPage = () => {
   const [date, setDate] = useState<string>('');
   useEffect(() => {
     const getDate = async () => {
@@ -54,4 +54,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default TestPage;
