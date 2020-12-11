@@ -7,7 +7,7 @@
     "deploy:production": "vercel --prod",
     "build": "yarn build:app && yarn build:storybook",
     "build:app": "snowpack build",
-    "build:storybook": "build-storybook -o build/storybook",
+    "build:storybook": "build-storybook -o build/storybook --quiet",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
