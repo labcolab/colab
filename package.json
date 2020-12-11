@@ -1,8 +1,9 @@
 {
   "scripts": {
     "dev": "snowpack dev --open none --port ${PORT:-8080}",
-    "start": "vercel dev --listen 3000",
-    "setup": "vercel login",
+    "start": "yarn env && vercel dev --listen 3000",
+    "env": "vercel env pull",
+    "setup": "vercel login && yarn env",
     "deploy:production": "vercel --prod",
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
