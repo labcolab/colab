@@ -19,7 +19,7 @@ const App = () => (
       <Route path="/dashboard" component={Home} />
       <Route path="/create" component={CreateProject} />
       <Route path="/test" component={Test} />
-      <Route path="/storybook" render={() => <Redirect to="/storybook/" />} />
+      <Route path="/stories" render={() => <Redirect to="/storybook/" />} />
     </Switch>
   </FirestoreContext.Provider>
 );
