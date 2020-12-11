@@ -11,6 +11,16 @@ module.exports = {
     '@storybook/addon-controls',
   ],
   webpackFinal: async (config) => {
+    config.module.rules.push({
+      test: /\.[tj]sx?$/,
+      loader: [
+        require.resolve('@open-wc/webpack-import-meta-loader'),
+        require.resolve(
+          '@snowpack/plugin-webpack/plugins/proxy-import-resolve',
+        ),
+      ],
+    });
+
     return {
       ...config,
       resolve: {
