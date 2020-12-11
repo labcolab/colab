@@ -26,13 +26,6 @@ const App = () => (
           return null;
         }}
       />
-      <Route
-        path="/storybook"
-        component={() => {
-          window.location.href = '/storybook/';
-          return null;
-        }}
-      />
     </Switch>
   </FirestoreContext.Provider>
 );
