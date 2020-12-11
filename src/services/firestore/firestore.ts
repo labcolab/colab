@@ -6,11 +6,6 @@ const firebaseConfig = {
   authDomain: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
 };
-// const firebaseConfig = {
-//   apiKey: window.env.FIREBASE_API_KEY,
-//   authDomain: window.env.FIREBASE_AUTH_DOMAIN,
-//   projectId: window.env.FIREBASE_PROJECT_ID,
-// };
 
 enum Collections {
   Projects = 'projects',
