@@ -39,6 +39,7 @@ InfoSecDeveloper.args = roles.infosec;
 
 export const iOSDeveloper = Template.bind({});
 iOSDeveloper.args = roles.ios;
+iOSDeveloper.storyName = 'iOS Developer';
 
 export const AndroidDeveloper = Template.bind({});
 AndroidDeveloper.args = roles.android;
