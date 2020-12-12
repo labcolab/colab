@@ -7,11 +7,6 @@ const firebaseConfig = {
   projectId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
 };
 
-enum Collections {
-  Projects = 'projects',
-  Users = 'users',
-}
-
 firebase.initializeApp(firebaseConfig);
 const Firestore = firebase.firestore();
 export default Firestore;

@@ -10,6 +10,7 @@ import {
 import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FirestoreContext } from '../../App';
+import RoleTag from '../RoleTag/RoleTag';
 
 interface FormValues {
   title: string;

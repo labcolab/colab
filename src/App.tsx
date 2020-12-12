@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import type firebase from 'firebase/app';
 import Home from './pages/Home/Home';
 import Welcome from './pages/Welcome/Welcome';

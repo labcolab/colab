@@ -14,6 +14,11 @@ export interface Role {
 //   images: string[];
 // }
 
+enum Collections {
+  Projects = 'projects',
+  Users = 'users',
+}
+
 export interface Project {
   title: string;
   description: string;

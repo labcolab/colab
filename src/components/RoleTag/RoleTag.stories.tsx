@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import type { Story, Meta } from '@storybook/react';
-
+import { action } from '@storybook/addon-actions';
 import RoleTag, { RoleTagProps } from './RoleTag';
+import roles from './roles';
 
 export default {
   component: RoleTag,
@@ -13,8 +14,29 @@ export default {
 const Template: Story<RoleTagProps> = (args) => <RoleTag {...args} />;
 
 // story
-export const DummyRole = Template.bind({});
-DummyRole.args = {
-  role: 'dummy role',
-  color: 'red',
+export const FrontendDeveloper = Template.bind({});
+FrontendDeveloper.args = {
+  ...roles.frontend,
+  onDelete: action('onDelete'),
 };
+
+export const BackendDeveloper = Template.bind({});
+BackendDeveloper.args = roles.backend;
+
+export const FullStackDeveloper = Template.bind({});
+FullStackDeveloper.args = roles.fullstack;
+
+export const Designer = Template.bind({});
+Designer.args = roles.designer;
+
+export const ProjectManager = Template.bind({});
+ProjectManager.args = roles.projectManager;
+
+export const InfoSecDeveloper = Template.bind({});
+InfoSecDeveloper.args = roles.infosec;
+
+export const iOSDeveloper = Template.bind({});
+iOSDeveloper.args = roles.ios;
+
+export const AndroidDeveloper = Template.bind({});
+AndroidDeveloper.args = roles.android;
