@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Wrap, WrapItem, Box, Text, VStack } from '@chakra-ui/react';
 import RoleTag, { RoleTagProps } from '../RoleTag/RoleTag';
-import { RolesInterface } from '../RoleTag/roles';
+import type { RolesInterface } from '../RoleTag/roles';
 
 export interface ProjectBoxProps {
   avatar: string;
