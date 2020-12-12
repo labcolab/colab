@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ProjectBox from '../ProjectBox/ProjectBox';
 import type { ProjectBoxProps } from '../ProjectBox/ProjectBox';
-import { FirestoreContext } from '../../App';
+import { FirestoreContext } from '../../services/firestore/firestore';
 
 const Feed = () => {
   const [projects, setProjects] = useState<ProjectBoxProps[]>();

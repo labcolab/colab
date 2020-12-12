@@ -1,5 +1,5 @@
 import { Container } from '@chakra-ui/react';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Navbar from '../../components/NavBar/NavBar';
 import Feed from '../../components/Feed/Feed';
 import { StyledNavContainer, StyledFeedContainer } from './Home.styles';
