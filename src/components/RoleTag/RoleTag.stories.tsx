@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import type { Story, Meta } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
 import RoleTag, { RoleTagProps } from './RoleTag';
 import roles from './roles';
 
@@ -11,14 +10,17 @@ export default {
 } as Meta;
 
 // template to be used by each story
-const Template: Story<RoleTagProps> = (args) => <RoleTag {...args} />;
+const Template: Story<RoleTagProps> = (args) => (
+  <div>
+    <RoleTag {...args} onDelete={undefined} />
+    <br />
+    <RoleTag {...args} />
+  </div>
+);
 
 // story
 export const FrontendDeveloper = Template.bind({});
-FrontendDeveloper.args = {
-  ...roles.frontend,
-  onDelete: action('onDelete'),
-};
+FrontendDeveloper.args = roles.frontend;
 
 export const BackendDeveloper = Template.bind({});
 BackendDeveloper.args = roles.backend;
