@@ -38,7 +38,6 @@ const RoleTag = ({ role, color, icon, onDelete }: RoleTagProps) => {
     />
   );
 
-  console.log(onDelete);
   return (
     <StyledTag size="sm" variant="subtle" colorScheme={color}>
       <TagLeftIcon boxSize="12px" as={Icon} />

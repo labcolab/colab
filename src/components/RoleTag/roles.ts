@@ -8,7 +8,7 @@ import layout2 from '../../assets/icons/layout2.svg';
 import userterminal from '../../assets/icons/userterminal.svg';
 import windowcode from '../../assets/icons/windowcode.svg';
 
-interface RolesInterface {
+export interface RolesInterface {
   [key: string]: RoleTagProps;
 }
 
