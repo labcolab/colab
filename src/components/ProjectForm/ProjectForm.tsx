@@ -9,8 +9,8 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FirestoreContext } from '../../App';
 import RoleTag from '../RoleTag/RoleTag';
+import { FirestoreContext } from '../../services/firestore/firestore';
 
 interface FormValues {
   title: string;

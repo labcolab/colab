@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { createContext } from 'react';
 
 const firebaseConfig = {
   apiKey: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_API_KEY,
@@ -10,3 +11,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const Firestore = firebase.firestore();
 export default Firestore;
+
+export const FirestoreContext = createContext<firebase.firestore.Firestore>(
+  Firestore,
+);

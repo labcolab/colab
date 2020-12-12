@@ -1,16 +1,10 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import type firebase from 'firebase/app';
 import Home from './pages/Home/Home';
 import Welcome from './pages/Welcome/Welcome';
 import CreateProject from './pages/CreateProject/CreateProject';
 import Test from './pages/Test/Test';
-import Firestore from './services/firestore/firestore';
-import 'firebase/firestore';
-
-export const FirestoreContext = createContext<firebase.firestore.Firestore>(
-  Firestore,
-);
+import Firestore, { FirestoreContext } from './services/firestore/firestore';
 
 const App = () => (
   <FirestoreContext.Provider value={Firestore}>
