@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { Input, InputGroup } from '@chakra-ui/react';
 
-// eslint-disable-next-line import/prefer-default-export
 export const StyledInput = styled(Input)`
   position: absolute;
   padding: 12px 30px;

@@ -3,8 +3,10 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.eslint.json',
   },
-  "rules": {
-    "react/jsx-one-expression-per-line": "off",
-    "react/jsx-props-no-spreadin": "off",
-  }
+  rules: {
+    'react/jsx-one-expression-per-line': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'object-curly-newline': 'off',
+    'import/prefer-default-export': 'off',
+  },
 };
