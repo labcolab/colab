@@ -1,6 +1,5 @@
 import React from 'react';
-import { TagLabel, TagLeftIcon, TagRightIcon } from '@chakra-ui/react';
-import { StyledTag } from './RoleTag.styles';
+import { Tag, TagLabel, TagLeftIcon, TagRightIcon } from '@chakra-ui/react';
 import cross from '../../assets/icons/CrossIcon';
 
 export interface RoleTagProps {
@@ -11,7 +10,7 @@ export interface RoleTagProps {
 }
 
 const RoleTag = ({ role, color, icon, onDelete }: RoleTagProps) => (
-  <StyledTag size="sm" variant="subtle" colorScheme={color}>
+  <Tag size="sm" variant="subtle" colorScheme={color}>
     <TagLeftIcon boxSize="12px" as={icon} />
     <TagLabel>{role}</TagLabel>
     {onDelete ? (
@@ -24,7 +23,7 @@ const RoleTag = ({ role, color, icon, onDelete }: RoleTagProps) => (
         color="white"
       />
     ) : null}
-  </StyledTag>
+  </Tag>
 );
 
 export default RoleTag;
