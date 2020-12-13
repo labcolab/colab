@@ -4,6 +4,7 @@ import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FirestoreContext } from '../../services/firestore/firestore';
 import RoleList from './RoleList';
+import roles from '../RoleTag/roles';
 import { StyledDescriptionInput } from './ProjectForm.styles';
 
 interface FormValues {
@@ -11,8 +12,16 @@ interface FormValues {
   description: string;
 }
 
+const defaultSelectedRoles = Object.keys(roles).reduce(
+  (acc, roleId) => ({
+    ...acc,
+    [roleId]: false,
+  }),
+  {},
+);
+
 const ProjectForm = () => {
-  const [chosenRoles, setChosenRoles] = useState<string[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState(defaultSelectedRoles);
   const initialValues: FormValues = {
     title: '',
     description: '',
@@ -23,19 +32,18 @@ const ProjectForm = () => {
     description: Yup.string().required('Please add a description'),
   });
 
-  const handleOnAdd = (role: string) => {
-    chosenRoles.push(role);
-    setChosenRoles(chosenRoles);
-    console.log(`added ${role}`);
-    console.log(chosenRoles);
+  const handleRoleSelected = (roleId: string) => {
+    setSelectedRoles((currentSelectedRoles) => ({
+      ...currentSelectedRoles,
+      [roleId]: true,
+    }));
   };
 
-  const handleOnRemove = (role: string) => {
-    const index = chosenRoles.indexOf(role);
-    if (index > -1) chosenRoles.splice(index, 1);
-    setChosenRoles(chosenRoles);
-    console.log(`removed ${role}`);
-    console.log(chosenRoles);
+  const handleRoleRemoved = (roleId: string) => {
+    setSelectedRoles((currentSelectedRoles) => ({
+      ...currentSelectedRoles,
+      [roleId]: false,
+    }));
   };
 
   const firestore = useContext(FirestoreContext);
@@ -49,7 +57,7 @@ const ProjectForm = () => {
           const doc = await firestore.collection('projects').add({
             title: values.title,
             description: values.description,
-            roles: chosenRoles,
+            roles: Object.keys(selectedRoles),
           });
           console.log(`saved doc with id: ${doc.id}`);
         } catch (err) {
@@ -79,7 +87,12 @@ const ProjectForm = () => {
           </Field>
           <ErrorMessage name="description" />
 
-          <RoleList onAdd={handleOnAdd} onRemove={handleOnRemove} />
+          <RoleList
+            onSelect={handleRoleSelected}
+            onRemove={handleRoleRemoved}
+            roles={roles}
+            selectedRoles={selectedRoles}
+          />
 
           <Button mt={4} type="submit">
             Submit

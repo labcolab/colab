@@ -1,51 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TagLabel, TagLeftIcon } from '@chakra-ui/react';
 import { StyledTag } from './RoleTag.styles';
 
 export interface RoleTagProps {
+  id: string;
   role: string;
   color: string;
   icon: React.ElementType;
-  clickable: boolean;
-  onAdd?: (role: string) => void;
-  onRemove?: (role: string) => void;
+  selected?: boolean;
+  onClick?: (id: string) => void;
 }
-
-const colorBeforeClick = 'grey';
 
 const RoleTag = ({
   role,
   color,
   icon,
-  clickable,
-  onAdd,
-  onRemove,
-}: RoleTagProps) => {
-  const defaultColor = clickable ? colorBeforeClick : color;
-  const [tagColor, setTagColor] = useState<string>(defaultColor);
-
-  const onChoose = () => {
-    if (tagColor === color) {
-      setTagColor(colorBeforeClick);
-      if (onRemove) onRemove(role);
-    } else {
-      setTagColor(color);
-      if (onAdd) onAdd(role);
-    }
-  };
-
-  return (
-    <StyledTag
-      size="sm"
-      variant="subtle"
-      colorScheme={tagColor}
-      role="button"
-      onClick={clickable ? onChoose : undefined}
-    >
-      <TagLeftIcon boxSize="12px" as={icon} />
-      <TagLabel>{role}</TagLabel>
-    </StyledTag>
-  );
-};
+  id,
+  selected,
+  onClick,
+}: RoleTagProps) => (
+  <StyledTag
+    size="sm"
+    variant="subtle"
+    colorScheme={selected || !onClick ? color : 'white'}
+    onClick={onClick ? () => onClick(id) : undefined}
+    role={onClick ? 'button' : undefined}
+  >
+    <TagLeftIcon as={icon} />
+    <TagLabel>{role}</TagLabel>
+  </StyledTag>
+);
 
 export default RoleTag;
