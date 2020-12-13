@@ -21,7 +21,7 @@ const RoleTag = ({ role, color, icon, onDelete }: RoleTagProps) => (
         onClick={() => onDelete(role)}
         role="button"
         tabIndex={0}
-        color="#b30f0f"
+        color="white"
       />
     ) : null}
   </StyledTag>
