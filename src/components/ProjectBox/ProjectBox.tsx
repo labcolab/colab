@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar, Wrap, WrapItem, Box, Text, VStack } from '@chakra-ui/react';
-import RoleTag, { RoleTagProps } from '../RoleTag/RoleTag';
+import RoleTag from '../RoleTag/RoleTag';
 import type { RolesInterface } from '../RoleTag/roles';
 
 export interface ProjectBoxProps {
@@ -18,7 +18,7 @@ const ProjectBox = ({
   date,
   description,
   roles,
-  images,
+  images = [],
 }: ProjectBoxProps) => (
   <Box
     w={images ? '100%' : '50%'}
@@ -47,13 +47,11 @@ const ProjectBox = ({
         ))}
       </Wrap>
       <Wrap spacing={2}>
-        {images
-          ? images.map((image) => (
-              <WrapItem>
-                <img src={image} alt={image} key={image} />
-              </WrapItem>
-            ))
-          : null}
+        {images.map((image) => (
+          <WrapItem>
+            <img src={image} alt={image} key={image} />
+          </WrapItem>
+        ))}
       </Wrap>
     </VStack>
   </Box>

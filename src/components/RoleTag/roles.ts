@@ -1,12 +1,14 @@
 import type { RoleTagProps } from './RoleTag';
-import android from '../../assets/icons/android.svg';
-import database from '../../assets/icons/database.svg';
-import key from '../../assets/icons/key.svg';
-import ios from '../../assets/icons/ios.svg';
-import layers from '../../assets/icons/layers.svg';
-import layout2 from '../../assets/icons/layout2.svg';
-import userterminal from '../../assets/icons/userterminal.svg';
-import windowcode from '../../assets/icons/windowcode.svg';
+import {
+  AndroidIcon,
+  DatabaseIcon,
+  KeyIcon,
+  IOSIcon,
+  LayersIcon,
+  LayoutIcon,
+  UserTerminalIcon,
+  WindowCodeIcon,
+} from '../../assets/icons';
 
 export interface RolesInterface {
   [key: string]: RoleTagProps;
@@ -16,42 +18,42 @@ const Roles: RolesInterface = {
   frontend: {
     role: 'Front-end Developer',
     color: 'blue',
-    icon: windowcode,
+    icon: WindowCodeIcon,
   },
   backend: {
     role: 'Back-end Developer',
     color: 'green',
-    icon: database,
+    icon: DatabaseIcon,
   },
   fullstack: {
     role: 'Full-stack Developer',
     color: 'yellow',
-    icon: layers,
+    icon: LayersIcon,
   },
   designer: {
     role: 'Designer',
     color: 'pink',
-    icon: layout2,
+    icon: LayoutIcon,
   },
   projectManager: {
     role: 'Project Manager',
     color: 'purple',
-    icon: userterminal,
+    icon: UserTerminalIcon,
   },
   infosec: {
     role: 'InfoSec Developer',
     color: 'orange',
-    icon: key,
+    icon: KeyIcon,
   },
   ios: {
     role: 'iOS Developer',
     color: 'red',
-    icon: ios,
+    icon: IOSIcon,
   },
   android: {
     role: 'Android Developer',
     color: 'teal',
-    icon: android,
+    icon: AndroidIcon,
   },
 };
 
