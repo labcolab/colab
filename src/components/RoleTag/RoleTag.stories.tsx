@@ -11,7 +11,7 @@ const supportedIcons: any = {
   ...ChakraUIIcons,
 };
 
-delete supportedIcons.Icons;
+delete supportedIcons.Icon;
 delete supportedIcons.createIcon;
 
 export default {
