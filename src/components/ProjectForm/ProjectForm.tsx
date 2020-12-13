@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
   Input,
   Button,
-  Select,
 } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import RoleTag from '../RoleTag/RoleTag';
 import { FirestoreContext } from '../../services/firestore/firestore';
+import RoleList from './RoleList';
+import roles from '../RoleTag/roles';
 
 interface FormValues {
   title: string;
@@ -18,7 +18,26 @@ interface FormValues {
   roles: string[];
 }
 
+// interface RoleCount {
+//   role: string;
+//   count: number;
+// }
+
+interface RoleCount {
+  [key: string]: number;
+}
+
 const ProjectForm = () => {
+  const [roleCounts, setRoleCounts] = useState<RoleCount>({});
+
+  //if it exists, will override it --> object spreading (first spread, update later)
+  const onChange = (role: string, count: number) => {
+    setRoleCounts((currentRoleCounts) => ({
+      ...currentRoleCounts,
+      [role]: count,
+    }));
+  };
+
   const initialValues: FormValues = {
     title: '',
     description: '',
@@ -69,18 +88,9 @@ const ProjectForm = () => {
             )}
           </Field>
           <ErrorMessage name="description" />
-          <Field name="roles">
-            {({ field, form }: FieldProps) => (
-              <FormControl isRequired>
-                <FormLabel htmlFor="roles">Roles</FormLabel>
-                <Select {...field} id="roles" placeholder="Select role">
-                  <option>First role</option>
-                  <option>Second role</option>
-                </Select>
-                <FormErrorMessage>{form.errors.description}</FormErrorMessage>
-              </FormControl>
-            )}
-          </Field>
+
+          <RoleList onChange={onChange} />
+
           <Button mt={4} type="submit">
             Submit
           </Button>

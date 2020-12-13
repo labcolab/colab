@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading */
+// eslint-disable-next-line react/jsx-props-no-spreading
 import React from 'react';
 import type { Story, Meta } from '@storybook/react';
 import ProjectForm from './ProjectForm';
