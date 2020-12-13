@@ -11,6 +11,9 @@ const supportedIcons: any = {
   ...ChakraUIIcons,
 };
 
+delete supportedIcons.Icons;
+delete supportedIcons.createIcon;
+
 export default {
   component: RoleTag,
   title: 'Components/RoleTag',
