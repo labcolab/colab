@@ -1,63 +1,55 @@
 import React, { useContext, useState } from 'react';
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  Button,
-} from '@chakra-ui/react';
+import { FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FirestoreContext } from '../../services/firestore/firestore';
 import RoleList from './RoleList';
-import roles from '../RoleTag/roles';
+import { StyledDescriptionInput } from './ProjectForm.styles';
 
 interface FormValues {
   title: string;
   description: string;
-  roles: string[];
-}
-
-// interface RoleCount {
-//   role: string;
-//   count: number;
-// }
-
-interface RoleCount {
-  [key: string]: number;
 }
 
 const ProjectForm = () => {
-  const [roleCounts, setRoleCounts] = useState<RoleCount>({});
-
-  //if it exists, will override it --> object spreading (first spread, update later)
-  const onChange = (role: string, count: number) => {
-    setRoleCounts((currentRoleCounts) => ({
-      ...currentRoleCounts,
-      [role]: count,
-    }));
-  };
-
+  const [chosenRoles, setChosenRoles] = useState<string[]>([]);
   const initialValues: FormValues = {
     title: '',
     description: '',
-    roles: [],
   };
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required('Please add a title'),
+    description: Yup.string().required('Please add a description'),
+  });
+
+  const handleOnAdd = (role: string) => {
+    chosenRoles.push(role);
+    setChosenRoles(chosenRoles);
+    console.log(`added ${role}`);
+    console.log(chosenRoles);
+  };
+
+  const handleOnRemove = (role: string) => {
+    const index = chosenRoles.indexOf(role);
+    if (index > -1) chosenRoles.splice(index, 1);
+    setChosenRoles(chosenRoles);
+    console.log(`removed ${role}`);
+    console.log(chosenRoles);
+  };
+
   const firestore = useContext(FirestoreContext);
 
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={Yup.object({
-        title: Yup.string().required('Please add a title'),
-        description: Yup.string().required('Please add a description'),
-      })}
+      validationSchema={validationSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
           const doc = await firestore.collection('projects').add({
             title: values.title,
             description: values.description,
-            roles: values.roles,
+            roles: chosenRoles,
           });
           console.log(`saved doc with id: ${doc.id}`);
         } catch (err) {
@@ -73,7 +65,6 @@ const ProjectForm = () => {
               <FormControl isRequired>
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <Input {...field} id="title" size="sm" />
-                <FormErrorMessage>{form.errors.title}</FormErrorMessage>
               </FormControl>
             )}
           </Field>
@@ -82,14 +73,13 @@ const ProjectForm = () => {
             {({ field, form }: FieldProps) => (
               <FormControl isRequired>
                 <FormLabel htmlFor="description">Description</FormLabel>
-                <Input {...field} id="description" size="lg" />
-                <FormErrorMessage>{form.errors.description}</FormErrorMessage>
+                <StyledDescriptionInput {...field} id="description" size="sm" />
               </FormControl>
             )}
           </Field>
           <ErrorMessage name="description" />
 
-          <RoleList onChange={onChange} />
+          <RoleList onAdd={handleOnAdd} onRemove={handleOnRemove} />
 
           <Button mt={4} type="submit">
             Submit

@@ -33,8 +33,8 @@ const Template: Story<RoleTagProps> = ({ icon, ...args }) => {
   const finalIcon = typeof icon === 'string' ? supportedIcons[icon] : icon;
   return (
     <div>
-      <RoleTag {...args} icon={finalIcon} onDelete={undefined} />
-      <br />
+      {/* <RoleTag {...args} icon={finalIcon} onChoose={action('onChange')} />
+      <br /> */}
       <RoleTag {...args} icon={finalIcon} />
     </div>
   );

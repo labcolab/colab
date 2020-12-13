@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
-import { NumberInput } from '@chakra-ui/react';
+import { Container } from '@chakra-ui/react';
 
 // eslint-disable-next-line import/prefer-default-export
-export const StyledNumberInput = styled(NumberInput)`
-  margin-left: 8px;
-  width: 60px;
+export const StyledContainer = styled(Container)`
+  margin-top: 20px;
 `;
