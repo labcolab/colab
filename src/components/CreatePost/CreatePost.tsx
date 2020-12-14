@@ -69,6 +69,7 @@ const CreatePost = () => {
           console.log(`error saving doc: ${err}`);
         }
         resetForm();
+        setSelectedRoles(defaultSelectedRoles);
       }}
     >
       {(props) => (
