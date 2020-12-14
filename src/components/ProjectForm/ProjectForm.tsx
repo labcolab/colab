@@ -12,10 +12,10 @@ interface FormValues {
   description: string;
 }
 
-const defaultSelectedRoles = Object.keys(roles).reduce(
-  (acc, roleId) => ({
+const defaultSelectedRoles = Object.values(roles).reduce(
+  (acc, { id }) => ({
     ...acc,
-    [roleId]: false,
+    [id]: false,
   }),
   {},
 );
