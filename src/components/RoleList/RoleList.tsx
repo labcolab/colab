@@ -1,7 +1,6 @@
 import React from 'react';
 import type { RolesInterface, SelectedRolesInterface } from '../RoleTag/roles';
-import RoleTag from '../RoleTag/RoleTag';
-import { StyledContainer } from './RoleList.styles';
+import { StyledRoleTag, StyledContainer } from './RoleList.styles';
 
 export interface RoleListProps {
   roles: RolesInterface;
@@ -18,13 +17,13 @@ const RoleList = ({
 }: RoleListProps) => (
   <StyledContainer>
     {Object.values(roles).map(({ role, color, icon, id }) => (
-      <RoleTag
+      <StyledRoleTag
         key={id}
         id={id}
         role={role}
         color={color}
         icon={icon}
-        selected={Boolean(selectedRoles[id])}
+        selected={selectedRoles[id]}
         onClick={selectedRoles[id] ? onRemove : onSelect}
       />
     ))}

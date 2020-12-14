@@ -20,19 +20,20 @@ const defaultSelectedRoles = Object.values(roles).reduce(
   {},
 );
 
+const initialValues: FormValues = {
+  title: '',
+  description: '',
+};
+
+const validationSchema = Yup.object({
+  title: Yup.string().required('Please add a title'),
+  description: Yup.string().required('Please add a description'),
+});
+
 const CreatePost = () => {
   const [selectedRoles, setSelectedRoles] = useState<SelectedRolesInterface>(
     defaultSelectedRoles,
   );
-  const initialValues: FormValues = {
-    title: '',
-    description: '',
-  };
-
-  const validationSchema = Yup.object({
-    title: Yup.string().required('Please add a title'),
-    description: Yup.string().required('Please add a description'),
-  });
 
   const handleRoleSelected = (roleId: string) => {
     setSelectedRoles((currentSelectedRoles) => ({

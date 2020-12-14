@@ -1,6 +1,5 @@
 import React from 'react';
-import { TagLabel, TagLeftIcon } from '@chakra-ui/react';
-import { StyledTag } from './RoleTag.styles';
+import { Tag, TagLabel, TagLeftIcon } from '@chakra-ui/react';
 
 export interface RoleTagProps {
   id: string;
@@ -19,7 +18,7 @@ const RoleTag = ({
   selected,
   onClick,
 }: RoleTagProps) => (
-  <StyledTag
+  <Tag
     size="sm"
     variant="subtle"
     colorScheme={selected || !onClick ? color : 'white'}
@@ -28,7 +27,7 @@ const RoleTag = ({
   >
     <TagLeftIcon as={icon} />
     <TagLabel>{role}</TagLabel>
-  </StyledTag>
+  </Tag>
 );
 
 export default RoleTag;
