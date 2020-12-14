@@ -1,11 +1,11 @@
 import React from 'react';
-import type { RolesInterface } from '../RoleTag/roles';
+import type { RolesInterface, SelectedRolesInterface } from '../RoleTag/roles';
 import RoleTag from '../RoleTag/RoleTag';
 import { StyledContainer } from './RoleList.styles';
 
 export interface RoleListProps {
   roles: RolesInterface;
-  selectedRoles: RolesInterface;
+  selectedRoles: SelectedRolesInterface;
   onSelect?: (roleId: string) => void;
   onRemove?: (roleId: string) => void;
 }

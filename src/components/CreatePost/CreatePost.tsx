@@ -3,9 +3,9 @@ import { FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FirestoreContext } from '../../services/firestore/firestore';
-import RoleList from './RoleList';
-import roles from '../RoleTag/roles';
-import { StyledDescriptionInput } from './ProjectForm.styles';
+import RoleList from '../RoleList/RoleList';
+import roles, { SelectedRolesInterface } from '../RoleTag/roles';
+import { StyledDescriptionInput } from './CreatePost.styles';
 
 interface FormValues {
   title: string;
@@ -20,8 +20,10 @@ const defaultSelectedRoles = Object.values(roles).reduce(
   {},
 );
 
-const ProjectForm = () => {
-  const [selectedRoles, setSelectedRoles] = useState(defaultSelectedRoles);
+const CreatePost = () => {
+  const [selectedRoles, setSelectedRoles] = useState<SelectedRolesInterface>(
+    defaultSelectedRoles,
+  );
   const initialValues: FormValues = {
     title: '',
     description: '',
@@ -54,10 +56,13 @@ const ProjectForm = () => {
       validationSchema={validationSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
+          const savedRoles = Object.keys(selectedRoles).filter(
+            (key) => selectedRoles[key] === true,
+          );
           const doc = await firestore.collection('projects').add({
             title: values.title,
             description: values.description,
-            roles: Object.keys(selectedRoles),
+            roles: savedRoles,
           });
           console.log(`saved doc with id: ${doc.id}`);
         } catch (err) {
@@ -103,4 +108,4 @@ const ProjectForm = () => {
   );
 };
 
-export default ProjectForm;
+export default CreatePost;

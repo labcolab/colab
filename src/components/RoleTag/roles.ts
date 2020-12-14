@@ -14,6 +14,10 @@ export interface RolesInterface {
   [key: string]: RoleTagProps;
 }
 
+export interface SelectedRolesInterface {
+  [key: string]: boolean;
+}
+
 const Roles: RolesInterface = {
   frontend: {
     id: 'frontend',
