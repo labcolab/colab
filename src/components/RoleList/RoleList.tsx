@@ -16,7 +16,7 @@ const RoleList = ({
   onRemove,
 }: RoleListProps) => (
   <StyledContainer>
-    {Object.values(roles).map(({ role, color, icon, id }) => (
+    {Object.values(roles).map(({ role, color, icon, id, className }) => (
       <StyledRoleTag
         key={id}
         id={id}
@@ -25,6 +25,7 @@ const RoleList = ({
         icon={icon}
         selected={selectedRoles[id]}
         onClick={selectedRoles[id] ? onRemove : onSelect}
+        className={className}
       />
     ))}
   </StyledContainer>

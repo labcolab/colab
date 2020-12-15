@@ -8,6 +8,7 @@ export interface RoleTagProps {
   icon: React.ElementType;
   selected?: boolean;
   onClick?: (id: string) => void;
+  className: string;
 }
 
 const RoleTag = ({
@@ -17,6 +18,7 @@ const RoleTag = ({
   id,
   selected,
   onClick,
+  className,
 }: RoleTagProps) => (
   <Tag
     size="sm"
@@ -24,6 +26,7 @@ const RoleTag = ({
     colorScheme={selected || !onClick ? color : 'white'}
     onClick={onClick ? () => onClick(id) : undefined}
     role={onClick ? 'button' : undefined}
+    className={className}
   >
     <TagLeftIcon as={icon} />
     <TagLabel>{role}</TagLabel>

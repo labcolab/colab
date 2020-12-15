@@ -8,6 +8,6 @@ export const StyledContainer = styled(Container)`
 `;
 
 export const StyledRoleTag = styled(RoleTag)`
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 6px;
+  margin-right: 6px;
 `;
