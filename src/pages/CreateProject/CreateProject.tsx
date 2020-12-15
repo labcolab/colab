@@ -1,7 +1,7 @@
 import { Container } from '@chakra-ui/react';
 import React from 'react';
 import Navbar from '../../components/NavBar/NavBar';
-import ProjectForm from '../../components/ProjectForm/ProjectForm';
+import CreatePost from '../../components/CreatePost/CreatePost';
 import {
   StyledNavContainer,
   StyledFormContainer,
@@ -14,7 +14,7 @@ export default function CreateProject() {
         <Navbar />
       </StyledNavContainer>
       <StyledFormContainer>
-        <ProjectForm />
+        <CreatePost />
       </StyledFormContainer>
     </Container>
   );

@@ -1,28 +1,35 @@
 import React from 'react';
-import { Tag, TagLabel, TagLeftIcon, TagRightIcon } from '@chakra-ui/react';
-import cross from '../../assets/icons/CrossIcon';
+import { Tag, TagLabel, TagLeftIcon } from '@chakra-ui/react';
 
 export interface RoleTagProps {
+  id: string;
   role: string;
   color: string;
   icon: React.ElementType;
-  onDelete?: (role: string) => void;
+  selected?: boolean;
+  onClick?: (id: string) => void;
+  className: string;
 }
 
-const RoleTag = ({ role, color, icon, onDelete }: RoleTagProps) => (
-  <Tag size="sm" variant="subtle" colorScheme={color}>
-    <TagLeftIcon boxSize="12px" as={icon} />
+const RoleTag = ({
+  role,
+  color,
+  icon,
+  id,
+  selected,
+  onClick,
+  className,
+}: RoleTagProps) => (
+  <Tag
+    size="sm"
+    variant="subtle"
+    colorScheme={selected || !onClick ? color : 'white'}
+    onClick={onClick ? () => onClick(id) : undefined}
+    role={onClick ? 'button' : undefined}
+    className={className}
+  >
+    <TagLeftIcon as={icon} />
     <TagLabel>{role}</TagLabel>
-    {onDelete ? (
-      <TagRightIcon
-        boxSize="12px"
-        as={cross}
-        onClick={() => onDelete(role)}
-        role="button"
-        tabIndex={0}
-        color="white"
-      />
-    ) : null}
   </Tag>
 );
 

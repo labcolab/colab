@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Story, Meta } from '@storybook/react';
 import * as ChakraUIIcons from '@chakra-ui/icons';
 import RoleTag, { RoleTagProps } from './RoleTag';
@@ -27,20 +27,33 @@ export default {
   },
 } as Meta;
 
-// template to be used by each story
-// eslint-disable-next-line react/prop-types
-const Template: Story<RoleTagProps> = ({ icon, ...args }) => {
+const Template: Story<RoleTagProps> = ({
+  icon,
+  selected,
+  ...args
+}: RoleTagProps) => {
   const finalIcon = typeof icon === 'string' ? supportedIcons[icon] : icon;
+
+  const [roleSelected, selectRole] = useState(selected);
+
+  useEffect(() => {
+    selectRole(selected);
+  }, [selected]);
+
+  const handleRoleSelected = () => {
+    selectRole((value) => !value);
+  };
+
   return (
-    <div>
-      <RoleTag {...args} icon={finalIcon} onDelete={undefined} />
-      <br />
-      <RoleTag {...args} icon={finalIcon} />
-    </div>
+    <RoleTag
+      {...args}
+      icon={finalIcon}
+      selected={roleSelected}
+      onClick={handleRoleSelected}
+    />
   );
 };
 
-// story
 export const FrontendDeveloper = Template.bind({});
 FrontendDeveloper.args = roles.frontend;
 
