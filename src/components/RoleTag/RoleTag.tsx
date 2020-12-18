@@ -1,24 +1,23 @@
 import React from 'react';
-import { Tag, TagLabel, TagLeftIcon } from '@chakra-ui/react';
+import { Tag, TagLabel, TagLeftIcon, TagProps } from '@chakra-ui/react';
 
-export interface RoleTagProps {
+export interface RoleTagProps extends Omit<TagProps, 'onClick'> {
   id: string;
   role: string;
   color: string;
   icon: React.ElementType;
   selected?: boolean;
   onClick?: (id: string) => void;
-  className: string;
 }
 
 const RoleTag = ({
+  id,
   role,
   color,
   icon,
-  id,
   selected,
   onClick,
-  className,
+  ...otherProps
 }: RoleTagProps) => (
   <Tag
     size="sm"
@@ -26,7 +25,7 @@ const RoleTag = ({
     colorScheme={selected || !onClick ? color : 'white'}
     onClick={onClick ? () => onClick(id) : undefined}
     role={onClick ? 'button' : undefined}
-    className={className}
+    {...otherProps}
   >
     <TagLeftIcon as={icon} />
     <TagLabel>{role}</TagLabel>
