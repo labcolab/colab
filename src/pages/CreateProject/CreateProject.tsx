@@ -10,9 +10,9 @@ import {
 export default function CreateProject() {
   return (
     <Container w="100%" h="100%">
-      <StyledNavContainer>
+      {/* <StyledNavContainer>
         <Navbar />
-      </StyledNavContainer>
+      </StyledNavContainer> */}
       <StyledFormContainer>
         <CreatePost />
       </StyledFormContainer>

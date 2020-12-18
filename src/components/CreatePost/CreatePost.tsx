@@ -1,16 +1,18 @@
 import React, { useContext, useState } from 'react';
-import { FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
-import { Form, Formik, Field, FieldProps, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { FirestoreContext } from '../../services/firestore/firestore';
+import { FormControl, Input, Stack, VStack, HStack } from '@chakra-ui/react';
+import { FirebaseContext } from '../../services/firebase/firebase';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
-import { StyledDescriptionInput } from './CreatePost.styles';
-
-interface FormValues {
-  title: string;
-  description: string;
-}
+import {
+  StyledDescriptionInput,
+  StyledBox,
+  StyledText,
+  StyledCloseButton,
+  StyledImageButton,
+  StyledPostButton,
+  StyledTitleInput,
+} from './CreatePost.styles';
+import { ImageUploadIcon } from '../../assets/icons';
 
 const defaultSelectedRoles = Object.values(roles).reduce(
   (acc, { id }) => ({
@@ -19,16 +21,6 @@ const defaultSelectedRoles = Object.values(roles).reduce(
   }),
   {},
 );
-
-const initialValues: FormValues = {
-  title: '',
-  description: '',
-};
-
-const validationSchema = Yup.object({
-  title: Yup.string().required('Please add a title'),
-  description: Yup.string().required('Please add a description'),
-});
 
 const CreatePost = () => {
   const [selectedRoles, setSelectedRoles] = useState<SelectedRolesInterface>(
@@ -49,64 +41,147 @@ const CreatePost = () => {
     }));
   };
 
-  const firestore = useContext(FirestoreContext);
+  const { firestore, storage } = useContext(FirebaseContext);
+
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [images, setImages] = useState<FileList>();
+  const [showForm, setShowForm] = useState<boolean>(true);
+
+  const fileInput = React.createRef<HTMLInputElement>();
+
+  const storeImages = async () => {
+    console.log('images: ', images);
+    let urls: string[] = [];
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        const childRef = storage.child(images[i].name);
+        const snapshot = await childRef.put(images[i]);
+        const url = await snapshot.ref.getDownloadURL();
+        urls = [...urls, url];
+        console.log(`i: ${i}, image: ${images[i].name}, url: ${url}`);
+      }
+      console.log('done!');
+    }
+    return urls;
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const savedRoles = Object.keys(selectedRoles).filter(
+      (key) => selectedRoles[key] === true,
+    );
+
+    try {
+      const urls = await storeImages();
+
+      const doc = await firestore.collection('projects').add({
+        title,
+        description,
+        roles: savedRoles,
+        images: urls,
+      });
+      console.log(`saved doc with id: ${doc.id}`);
+    } catch (err) {
+      console.log(`error saving doc: ${err}`);
+    }
+    setTitle('');
+    setDescription('');
+    setImages(undefined);
+    setSelectedRoles(defaultSelectedRoles);
+    console.log('DONE!');
+  };
+
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    setImages(files || undefined);
+  };
+
+  const handleFileUpload = async () => {
+    if (fileInput.current) {
+      console.log(fileInput.current);
+      fileInput.current.click();
+    }
+  };
+
+  const handleClosed = () => {
+    setShowForm(false);
+  };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={async (values, { resetForm }) => {
-        try {
-          const savedRoles = Object.keys(selectedRoles).filter(
-            (key) => selectedRoles[key] === true,
-          );
-          const doc = await firestore.collection('projects').add({
-            title: values.title,
-            description: values.description,
-            roles: savedRoles,
-          });
-          console.log(`saved doc with id: ${doc.id}`);
-        } catch (err) {
-          console.log(`error saving doc: ${err}`);
-        }
-        resetForm();
-        setSelectedRoles(defaultSelectedRoles);
-      }}
-    >
-      {(props) => (
-        <Form>
-          <Field name="title">
-            {({ field, form }: FieldProps) => (
+    <div>
+      {showForm && (
+        <StyledBox
+          my={4}
+          mx="auto"
+          p={8}
+          maxWidth="80%"
+          borderWidth={0.5}
+          borderRadius={8}
+          boxShadow="lg"
+        >
+          <StyledCloseButton onClick={handleClosed} />
+          <form onSubmit={handleFormSubmit}>
+            <VStack spacing={5}>
               <FormControl isRequired>
-                <FormLabel htmlFor="title">Title</FormLabel>
-                <Input {...field} id="title" size="sm" />
+                <StyledTitleInput
+                  id="title"
+                  size="md"
+                  placeholder="Title"
+                  onChange={(e) => setTitle(e.currentTarget.value)}
+                  value={title || ''}
+                />
               </FormControl>
-            )}
-          </Field>
-          <ErrorMessage name="title" />
-          <Field name="description">
-            {({ field, form }: FieldProps) => (
+
+              <Stack direction="row">
+                <StyledText>Collaborators:</StyledText>
+                <RoleList
+                  onSelect={handleRoleSelected}
+                  onRemove={handleRoleRemoved}
+                  roles={roles}
+                  selectedRoles={selectedRoles}
+                />
+              </Stack>
+
               <FormControl isRequired>
-                <FormLabel htmlFor="description">Description</FormLabel>
-                <StyledDescriptionInput {...field} id="description" size="sm" />
+                <StyledDescriptionInput
+                  id="description"
+                  size="sm"
+                  placeholder="Describe your project!"
+                  onChange={(e) => setDescription(e.currentTarget.value)}
+                  value={description || ''}
+                />
               </FormControl>
-            )}
-          </Field>
-          <ErrorMessage name="description" />
 
-          <RoleList
-            onSelect={handleRoleSelected}
-            onRemove={handleRoleRemoved}
-            roles={roles}
-            selectedRoles={selectedRoles}
-          />
-
-          <Button mt={4} type="submit">
-            Submit
-          </Button>
-        </Form>
+              <HStack spacing={4}>
+                <Input
+                  type="file"
+                  multiple
+                  ref={fileInput}
+                  onChange={handleFileSelected}
+                  style={{ display: 'none' }}
+                />
+                <StyledImageButton
+                  aria-label="upload"
+                  icon={<ImageUploadIcon />}
+                  onClick={handleFileUpload}
+                  colorScheme="white"
+                />
+                <StyledPostButton
+                  mt={4}
+                  type="submit"
+                  variant="outline"
+                  colorScheme="orange"
+                >
+                  Post
+                </StyledPostButton>
+              </HStack>
+            </VStack>
+          </form>
+        </StyledBox>
       )}
-    </Formik>
+    </div>
   );
 };
 

@@ -4,10 +4,10 @@ import Home from './pages/Home/Home';
 import Welcome from './pages/Welcome/Welcome';
 import CreateProject from './pages/CreateProject/CreateProject';
 import Test from './pages/Test/Test';
-import Firestore, { FirestoreContext } from './services/firestore/firestore';
+import FirebaseStuff, { FirebaseContext } from './services/firebase/firebase';
 
 const App = () => (
-  <FirestoreContext.Provider value={Firestore}>
+  <FirebaseContext.Provider value={FirebaseStuff}>
     <Switch>
       <Route exact path="/" component={Welcome} />
       <Route path="/dashboard" component={Home} />
@@ -21,7 +21,7 @@ const App = () => (
         }}
       />
     </Switch>
-  </FirestoreContext.Provider>
+  </FirebaseContext.Provider>
 );
 
 export default App;

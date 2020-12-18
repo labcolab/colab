@@ -6,6 +6,7 @@ import LayersIcon from './LayersIcon';
 import LayoutIcon from './LayoutIcon';
 import UserTerminalIcon from './UserTerminalIcon';
 import WindowCodeIcon from './WindowCodeIcon';
+import ImageUploadIcon from './ImageUploadIcon';
 
 export {
   AndroidIcon,
@@ -16,4 +17,5 @@ export {
   LayoutIcon,
   UserTerminalIcon,
   WindowCodeIcon,
+  ImageUploadIcon,
 };
