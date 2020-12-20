@@ -28,7 +28,7 @@ const RoleTag = ({
     {...otherProps}
   >
     <TagLeftIcon as={icon} />
-    <TagLabel>{role}</TagLabel>
+    <TagLabel fontSize="12px">{role}</TagLabel>
   </Tag>
 );
 

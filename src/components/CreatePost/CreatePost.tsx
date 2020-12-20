@@ -1,5 +1,18 @@
 import React, { useContext, useState } from 'react';
-import { FormControl, Input, Stack, VStack, HStack } from '@chakra-ui/react';
+import {
+  FormControl,
+  Input,
+  Stack,
+  VStack,
+  HStack,
+  Button,
+  Flex,
+  Spacer,
+  Center,
+  FlexProps,
+  InputProps,
+  SystemStyleObject,
+} from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
@@ -113,9 +126,8 @@ const CreatePost = () => {
     <div>
       {showForm && (
         <StyledBox
-          my={4}
-          mx="auto"
-          p={8}
+          paddingBottom="3px"
+          paddingLeft="20px"
           maxWidth="80%"
           borderWidth={0.5}
           borderRadius={8}
@@ -131,6 +143,7 @@ const CreatePost = () => {
                   placeholder="Title"
                   onChange={(e) => setTitle(e.currentTarget.value)}
                   value={title || ''}
+                  variant="unstyled"
                 />
               </FormControl>
 
@@ -141,6 +154,7 @@ const CreatePost = () => {
                   onRemove={handleRoleRemoved}
                   roles={roles}
                   selectedRoles={selectedRoles}
+                  marginTop="20px"
                 />
               </Stack>
 
@@ -151,10 +165,52 @@ const CreatePost = () => {
                   placeholder="Describe your project!"
                   onChange={(e) => setDescription(e.currentTarget.value)}
                   value={description || ''}
+                  variant="unstyled"
                 />
               </FormControl>
 
-              <HStack spacing={4}>
+              {/* <Input
+                type="file"
+                multiple
+                ref={fileInput}
+                onChange={handleFileSelected}
+                style={{ display: 'none' }}
+              />
+              <StyledImageButton
+                aria-label="upload"
+                icon={<ImageUploadIcon />}
+                onClick={handleFileUpload}
+                // colorScheme="white"
+              /> */}
+              {/* <StyledButton colorScheme="blue">Button</StyledButton> */}
+
+              <Flex width="100%">
+                {/* <Input
+                  type="file"
+                  multiple
+                  ref={fileInput}
+                  onChange={handleFileSelected}
+                  style={{ display: 'none' }}
+                /> */}
+                <StyledImageButton
+                  aria-label="upload"
+                  icon={<ImageUploadIcon />}
+                  onClick={handleFileUpload}
+                  colorScheme="white"
+                  margin="auto 0"
+                />
+                <Spacer />
+                <Button
+                  mt={4}
+                  type="submit"
+                  variant="outline"
+                  colorScheme="orange"
+                  margin="auto 0"
+                >
+                  Post
+                </Button>
+              </Flex>
+              {/* <HStack spacing={4}>
                 <Input
                   type="file"
                   multiple
@@ -176,7 +232,7 @@ const CreatePost = () => {
                 >
                   Post
                 </StyledPostButton>
-              </HStack>
+              </HStack> */}
             </VStack>
           </form>
         </StyledBox>
