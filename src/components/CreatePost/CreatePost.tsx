@@ -16,6 +16,8 @@ import {
   Textarea,
   Text,
   IconButton,
+  HStack,
+  Image,
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 import RoleList from '../RoleList/RoleList';
@@ -165,20 +167,35 @@ const CreatePost = () => {
               </FormControl>
 
               <Flex width="100%">
-                <Input
-                  type="file"
-                  multiple
-                  ref={fileInput}
-                  onChange={handleFileSelected}
-                  display="none"
-                />
-                <IconButton
-                  aria-label="upload"
-                  icon={<ImageUploadIcon />}
-                  onClick={handleFileUpload}
-                  colorScheme="white"
-                  margin="auto 0"
-                />
+                <HStack spacing="10px">
+                  <Input
+                    type="file"
+                    multiple
+                    ref={fileInput}
+                    onChange={handleFileSelected}
+                    display="none"
+                  />
+                  <IconButton
+                    aria-label="upload"
+                    icon={<ImageUploadIcon />}
+                    onClick={handleFileUpload}
+                    colorScheme="white"
+                    margin="auto 0"
+                  />
+                  {images &&
+                    Array.from(images).map((img) => {
+                      const url = URL.createObjectURL(img);
+                      return (
+                        <Image
+                          key={url}
+                          width="70px"
+                          height="auto"
+                          src={url}
+                          alt={img.name}
+                        />
+                      );
+                    })}
+                </HStack>
                 <Spacer />
                 <Button
                   mt={4}
