@@ -4,7 +4,6 @@ import {
   Input,
   Stack,
   VStack,
-  HStack,
   Button,
   Flex,
   Spacer,
@@ -12,19 +11,15 @@ import {
   FlexProps,
   InputProps,
   SystemStyleObject,
+  Box,
+  CloseButton,
+  Textarea,
+  Text,
+  IconButton,
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
-import {
-  StyledDescriptionInput,
-  StyledBox,
-  StyledText,
-  StyledCloseButton,
-  StyledImageButton,
-  StyledPostButton,
-  StyledTitleInput,
-} from './CreatePost.styles';
 import { ImageUploadIcon } from '../../assets/icons';
 
 const defaultSelectedRoles = Object.values(roles).reduce(
@@ -123,32 +118,31 @@ const CreatePost = () => {
   };
 
   return (
-    <div>
+    <Box>
       {showForm && (
-        <StyledBox
-          paddingBottom="3px"
-          paddingLeft="20px"
-          maxWidth="80%"
+        <Box
+          py="8px"
+          px="16px"
           borderWidth={0.5}
           borderRadius={8}
           boxShadow="lg"
         >
-          <StyledCloseButton onClick={handleClosed} />
           <form onSubmit={handleFormSubmit}>
+            <CloseButton onClick={handleClosed} ml="auto" color="red" />
             <VStack spacing={5}>
               <FormControl isRequired>
-                <StyledTitleInput
+                <Input
                   id="title"
-                  size="md"
                   placeholder="Title"
                   onChange={(e) => setTitle(e.currentTarget.value)}
                   value={title || ''}
                   variant="unstyled"
+                  fontSize="xl"
                 />
               </FormControl>
 
               <Stack direction="row">
-                <StyledText>Collaborators:</StyledText>
+                <Text fontSize="sm">Collaborators:</Text>
                 <RoleList
                   onSelect={handleRoleSelected}
                   onRemove={handleRoleRemoved}
@@ -159,40 +153,26 @@ const CreatePost = () => {
               </Stack>
 
               <FormControl isRequired>
-                <StyledDescriptionInput
+                <Textarea
                   id="description"
-                  size="sm"
                   placeholder="Describe your project!"
                   onChange={(e) => setDescription(e.currentTarget.value)}
                   value={description || ''}
                   variant="unstyled"
+                  height="150px"
+                  fontSize="sm"
                 />
               </FormControl>
 
-              {/* <Input
-                type="file"
-                multiple
-                ref={fileInput}
-                onChange={handleFileSelected}
-                style={{ display: 'none' }}
-              />
-              <StyledImageButton
-                aria-label="upload"
-                icon={<ImageUploadIcon />}
-                onClick={handleFileUpload}
-                // colorScheme="white"
-              /> */}
-              {/* <StyledButton colorScheme="blue">Button</StyledButton> */}
-
               <Flex width="100%">
-                {/* <Input
+                <Input
                   type="file"
                   multiple
                   ref={fileInput}
                   onChange={handleFileSelected}
-                  style={{ display: 'none' }}
-                /> */}
-                <StyledImageButton
+                  display="none"
+                />
+                <IconButton
                   aria-label="upload"
                   icon={<ImageUploadIcon />}
                   onClick={handleFileUpload}
@@ -210,34 +190,11 @@ const CreatePost = () => {
                   Post
                 </Button>
               </Flex>
-              {/* <HStack spacing={4}>
-                <Input
-                  type="file"
-                  multiple
-                  ref={fileInput}
-                  onChange={handleFileSelected}
-                  style={{ display: 'none' }}
-                />
-                <StyledImageButton
-                  aria-label="upload"
-                  icon={<ImageUploadIcon />}
-                  onClick={handleFileUpload}
-                  colorScheme="white"
-                />
-                <StyledPostButton
-                  mt={4}
-                  type="submit"
-                  variant="outline"
-                  colorScheme="orange"
-                >
-                  Post
-                </StyledPostButton>
-              </HStack> */}
             </VStack>
           </form>
-        </StyledBox>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

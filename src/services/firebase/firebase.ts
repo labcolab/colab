@@ -3,11 +3,13 @@ import 'firebase/firestore';
 import 'firebase/storage';
 import { createContext } from 'react';
 
+const env = import.meta.env || process.env;
+
 const firebaseConfig = {
-  apiKey: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_API_KEY,
-  authDomain: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: 'gs://colab-dff8b.appspot.com',
+  apiKey: env.SNOWPACK_PUBLIC_FIREBASE_API_KEY,
+  authDomain: env.SNOWPACK_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: env.SNOWPACK_PUBLIC_FIREBASE_STORAGE_BUCKET,
 };
 
 firebase.initializeApp(firebaseConfig);

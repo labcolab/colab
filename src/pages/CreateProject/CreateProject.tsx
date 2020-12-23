@@ -1,4 +1,4 @@
-import { Container } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 import Navbar from '../../components/NavBar/NavBar';
 import CreatePost from '../../components/CreatePost/CreatePost';
@@ -9,13 +9,14 @@ import {
 
 export default function CreateProject() {
   return (
-    <Container w="100%" h="100%">
+    <Box>
       {/* <StyledNavContainer>
         <Navbar />
       </StyledNavContainer> */}
-      <StyledFormContainer>
+      <Box>
         <CreatePost />
-      </StyledFormContainer>
-    </Container>
+      </Box>
+    </Box>
+    // <CreatePost />
   );
 }
