@@ -20,6 +20,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
+import ImageSlider from '../ImageSlider/ImageSlider';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
 import { ImageUploadIcon } from '../../assets/icons';
@@ -55,21 +56,22 @@ const CreatePost = () => {
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [images, setImages] = useState<FileList>();
+  const [files, setFiles] = useState<FileList>();
+  const [images, setImages] = useState<string[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
 
   const fileInput = React.createRef<HTMLInputElement>();
 
   const storeImages = async () => {
-    console.log('images: ', images);
+    console.log('files: ', files);
     let urls: string[] = [];
-    if (images) {
-      for (let i = 0; i < images.length; i++) {
-        const childRef = storage.child(images[i].name);
-        const snapshot = await childRef.put(images[i]);
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const childRef = storage.child(files[i].name);
+        const snapshot = await childRef.put(files[i]);
         const url = await snapshot.ref.getDownloadURL();
         urls = [...urls, url];
-        console.log(`i: ${i}, image: ${images[i].name}, url: ${url}`);
+        console.log(`i: ${i}, file: ${files[i].name}, url: ${url}`);
       }
       console.log('done!');
     }
@@ -98,14 +100,21 @@ const CreatePost = () => {
     }
     setTitle('');
     setDescription('');
-    setImages(undefined);
+    setFiles(undefined);
+    setImages([]);
     setSelectedRoles(defaultSelectedRoles);
     console.log('DONE!');
   };
 
   const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target;
-    setImages(files || undefined);
+    const inFiles = e.target.files;
+    setFiles(inFiles || undefined);
+    if (inFiles) {
+      Array.from(inFiles).map((img) => {
+        const url = URL.createObjectURL(img);
+        setImages((imgs) => [...imgs, url]);
+      });
+    }
   };
 
   const handleFileUpload = async () => {
@@ -182,19 +191,7 @@ const CreatePost = () => {
                     colorScheme="white"
                     margin="auto 0"
                   />
-                  {images &&
-                    Array.from(images).map((img) => {
-                      const url = URL.createObjectURL(img);
-                      return (
-                        <Image
-                          key={url}
-                          width="70px"
-                          height="auto"
-                          src={url}
-                          alt={img.name}
-                        />
-                      );
-                    })}
+                  {images.length && <ImageSlider images={images} />}
                 </HStack>
                 <Spacer />
                 <Button
