@@ -2,15 +2,21 @@ import React from 'react';
 import { Image, Box, IconButton, BoxProps } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
-export interface ImageSliderProps extends BoxProps {
-  images: string[];
+export interface ImagesInterface {
+  id: string;
+  image: string;
 }
 
-const ImageSlider = ({ images, ...otherProps }: ImageSliderProps) => (
+export interface ImageSliderProps extends Omit<BoxProps, 'onClick'> {
+  images: ImagesInterface[];
+  onClick?: (fileId: string) => void;
+}
+
+const ImageSlider = ({ images, onClick, ...otherProps }: ImageSliderProps) => (
   <Box display="block" textAlign="left" {...otherProps}>
     {images.map((img) => (
       <Box
-        key={img}
+        key={img.id}
         width="100px"
         height="70px"
         display="inline-block"
@@ -18,8 +24,8 @@ const ImageSlider = ({ images, ...otherProps }: ImageSliderProps) => (
         position="relative"
       >
         <Image
-          src={img}
-          alt={img}
+          src={img.image}
+          alt={img.image}
           objectFit="cover"
           width="100%"
           height="100%"
@@ -35,6 +41,7 @@ const ImageSlider = ({ images, ...otherProps }: ImageSliderProps) => (
           size="xs"
           borderRadius="full"
           colorScheme="orange"
+          onClick={onClick ? () => onClick(img.id) : undefined}
         />
       </Box>
     ))}

@@ -7,9 +7,6 @@ import {
   Button,
   Flex,
   Spacer,
-  FlexProps,
-  InputProps,
-  SystemStyleObject,
   Box,
   Textarea,
   Text,
@@ -17,13 +14,18 @@ import {
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import { FirebaseContext } from '../../services/firebase/firebase';
-import ImageSlider from '../ImageSlider/ImageSlider';
+import ImageSlider, { ImagesInterface } from '../ImageSlider/ImageSlider';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
 import { ImageUploadIcon } from '../../assets/icons';
 
 const maxTitleChars = 30;
 const maxDescrChars = 300;
+
+interface FilesInterface {
+  id: string;
+  file: File;
+}
 
 const defaultSelectedRoles = Object.values(roles).reduce(
   (acc, { id }) => ({
@@ -56,25 +58,25 @@ const CreatePost = () => {
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [files, setFiles] = useState<FileList>();
-  const [images, setImages] = useState<string[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<FilesInterface[]>([]);
+  const [selectedImages, setSelectedImages] = useState<ImagesInterface[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
-
-  const fileInput = React.createRef<HTMLInputElement>();
-
   const [titleChars, setTitleChars] = useState<number>(maxTitleChars);
   const [descrChars, setDescrChars] = useState<number>(maxDescrChars);
 
+  const fileInput = React.createRef<HTMLInputElement>();
+
   const storeImages = async () => {
-    console.log('files: ', files);
     let urls: string[] = [];
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const childRef = storage.child(files[i].name);
-        const snapshot = await childRef.put(files[i]);
+    if (selectedFiles) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const childRef = storage.child(selectedFiles[i].file.name);
+        const snapshot = await childRef.put(selectedFiles[i].file);
         const url = await snapshot.ref.getDownloadURL();
         urls = [...urls, url];
-        console.log(`i: ${i}, file: ${files[i].name}, url: ${url}`);
+        console.log(
+          `i: ${i}, id: ${selectedFiles[i].id}, file: ${selectedFiles[i].file.name}, url: ${url}`,
+        );
       }
       console.log('done!');
     }
@@ -103,27 +105,36 @@ const CreatePost = () => {
     }
     setTitle('');
     setDescription('');
-    setFiles(undefined);
-    setImages([]);
+    setSelectedFiles([]);
+    setSelectedImages([]);
     setSelectedRoles(defaultSelectedRoles);
     console.log('DONE!');
-  };
-
-  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inFiles = e.target.files;
-    setFiles(inFiles || undefined);
-    if (inFiles) {
-      Array.from(inFiles).map((img) => {
-        const url = URL.createObjectURL(img);
-        setImages((imgs) => [...imgs, url]);
-      });
-    }
   };
 
   const handleFileUpload = async () => {
     if (fileInput.current) {
       fileInput.current.click();
     }
+  };
+
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inFiles = e.target.files;
+    if (inFiles) {
+      Array.from(inFiles).map((file) => {
+        const id = Math.random().toString(36).substr(2, 9);
+        const url = URL.createObjectURL(file);
+        setSelectedFiles((files) => [...files, { id, file }]);
+        setSelectedImages((images) => [...images, { id, image: url }]);
+      });
+    }
+  };
+
+  const handleFileRemoved = (fileId: string) => {
+    const newFiles = selectedFiles.filter((file) => file.id !== fileId);
+    const newImages = selectedImages.filter((image) => image.id !== fileId);
+    setSelectedFiles(newFiles);
+    setSelectedImages(newImages);
+    console.log(`removed file: ${fileId}`);
   };
 
   const handleClosed = () => {
@@ -218,7 +229,13 @@ const CreatePost = () => {
                 </Text>
               </FormControl>
 
-              {images.length && <ImageSlider images={images} width="100%" />}
+              {selectedImages.length && (
+                <ImageSlider
+                  images={selectedImages}
+                  width="100%"
+                  onClick={handleFileRemoved}
+                />
+              )}
 
               <Flex width="100%">
                 <Stack direction="row">
