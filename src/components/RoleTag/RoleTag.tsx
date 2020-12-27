@@ -21,8 +21,9 @@ const RoleTag = ({
 }: RoleTagProps) => (
   <Tag
     size="sm"
-    variant="subtle"
-    colorScheme={selected || !onClick ? color : 'white'}
+    borderRadius="full"
+    variant={selected || !onClick ? 'subtle' : 'outline'}
+    colorScheme={selected || !onClick ? color : 'gray'}
     onClick={onClick ? () => onClick(id) : undefined}
     role={onClick ? 'button' : undefined}
     {...otherProps}

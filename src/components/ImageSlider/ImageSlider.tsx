@@ -1,64 +1,44 @@
 import React from 'react';
-import { Image, Box, IconButton } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Image, Box, IconButton, BoxProps } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 
-export interface ImageSliderProps {
+export interface ImageSliderProps extends BoxProps {
   images: string[];
 }
 
-const ImageSlider = ({ images }: ImageSliderProps) => {
-  const imageBox = React.createRef<HTMLDivElement>();
-
-  const scroll = (dir: number) => {
-    if (imageBox.current) {
-      imageBox.current.scrollLeft += dir * 70;
-    }
-  };
-
-  return (
-    <Box
-      textAlign="center"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-around"
-    >
-      <Box>
-        <IconButton
-          aria-label="prev"
-          icon={<ChevronLeftIcon />}
-          onClick={() => scroll(-1)}
+const ImageSlider = ({ images, ...otherProps }: ImageSliderProps) => (
+  <Box display="block" textAlign="left" {...otherProps}>
+    {images.map((img) => (
+      <Box
+        key={img}
+        width="100px"
+        height="70px"
+        display="inline-block"
+        marginRight="2px"
+        position="relative"
+      >
+        <Image
+          src={img}
+          alt={img}
+          objectFit="cover"
+          width="100%"
+          height="100%"
+          position="relative"
+          display="block"
         />
-        <Box
-          verticalAlign="middle"
-          display="inline-block"
-          width="50%"
-          whiteSpace="nowrap"
-          overflowX="auto"
-          overflowY="hidden"
-          ref={imageBox}
-        >
-          {images.map((img) => (
-            <Image
-              className="image"
-              key={img}
-              width="70px"
-              height="auto"
-              src={img}
-              alt={img}
-              margin="10px"
-              display="inline-block"
-              lineHeight="100px"
-            />
-          ))}
-        </Box>
         <IconButton
-          aria-label="next"
-          icon={<ChevronRightIcon />}
-          onClick={() => scroll(1)}
+          aria-label="delete image"
+          icon={<CloseIcon />}
+          position="absolute"
+          top={1}
+          right={1}
+          size="xs"
+          borderRadius="full"
+          colorScheme="orange"
         />
       </Box>
-    </Box>
-  );
-};
+    ))}
+  </Box>
+);
 
 export default ImageSlider;

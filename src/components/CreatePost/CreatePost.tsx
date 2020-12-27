@@ -7,23 +7,23 @@ import {
   Button,
   Flex,
   Spacer,
-  Center,
   FlexProps,
   InputProps,
   SystemStyleObject,
   Box,
-  CloseButton,
   Textarea,
   Text,
   IconButton,
-  HStack,
-  Image,
 } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 import { FirebaseContext } from '../../services/firebase/firebase';
 import ImageSlider from '../ImageSlider/ImageSlider';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
 import { ImageUploadIcon } from '../../assets/icons';
+
+const maxTitleChars = 30;
+const maxDescrChars = 300;
 
 const defaultSelectedRoles = Object.values(roles).reduce(
   (acc, { id }) => ({
@@ -61,6 +61,9 @@ const CreatePost = () => {
   const [showForm, setShowForm] = useState<boolean>(true);
 
   const fileInput = React.createRef<HTMLInputElement>();
+
+  const [titleChars, setTitleChars] = useState<number>(maxTitleChars);
+  const [descrChars, setDescrChars] = useState<number>(maxDescrChars);
 
   const storeImages = async () => {
     console.log('files: ', files);
@@ -119,13 +122,22 @@ const CreatePost = () => {
 
   const handleFileUpload = async () => {
     if (fileInput.current) {
-      console.log(fileInput.current);
       fileInput.current.click();
     }
   };
 
   const handleClosed = () => {
     setShowForm(false);
+  };
+
+  const checkTitle = (val: string) => {
+    setTitle(val);
+    setTitleChars(maxTitleChars - val.length);
+  };
+
+  const checkDescription = (val: string) => {
+    setDescription(val);
+    setDescrChars(maxDescrChars - val.length);
   };
 
   return (
@@ -139,17 +151,38 @@ const CreatePost = () => {
           boxShadow="lg"
         >
           <form onSubmit={handleFormSubmit}>
-            <CloseButton onClick={handleClosed} ml="auto" color="red" />
+            <Box width="100%" textAlign="right">
+              <IconButton
+                aria-label="close"
+                icon={<CloseIcon />}
+                onClick={handleClosed}
+                variant="outline"
+                border="none"
+                colorScheme="orange"
+                size="xs"
+              />
+            </Box>
+
             <VStack spacing={5}>
               <FormControl isRequired>
                 <Input
                   id="title"
                   placeholder="Title"
-                  onChange={(e) => setTitle(e.currentTarget.value)}
+                  onChange={(e) => checkTitle(e.currentTarget.value)}
                   value={title || ''}
                   variant="unstyled"
                   fontSize="xl"
+                  maxLength={maxTitleChars}
                 />
+                <Text
+                  fontSize="xs"
+                  color="gray.500"
+                  position="absolute"
+                  right={1}
+                  bottom={0}
+                >
+                  {titleChars}/{maxTitleChars}
+                </Text>
               </FormControl>
 
               <Stack direction="row">
@@ -167,16 +200,28 @@ const CreatePost = () => {
                 <Textarea
                   id="description"
                   placeholder="Describe your project!"
-                  onChange={(e) => setDescription(e.currentTarget.value)}
+                  onChange={(e) => checkDescription(e.currentTarget.value)}
                   value={description || ''}
                   variant="unstyled"
                   height="150px"
                   fontSize="sm"
+                  maxLength={maxDescrChars}
                 />
+                <Text
+                  fontSize="xs"
+                  color="gray.500"
+                  position="absolute"
+                  right={2}
+                  bottom={2}
+                >
+                  {descrChars}/{maxDescrChars}
+                </Text>
               </FormControl>
 
+              {images.length && <ImageSlider images={images} width="100%" />}
+
               <Flex width="100%">
-                <HStack spacing="10px">
+                <Stack direction="row">
                   <Input
                     type="file"
                     multiple
@@ -191,8 +236,7 @@ const CreatePost = () => {
                     colorScheme="white"
                     margin="auto 0"
                   />
-                  {images.length && <ImageSlider images={images} />}
-                </HStack>
+                </Stack>
                 <Spacer />
                 <Button
                   mt={4}
