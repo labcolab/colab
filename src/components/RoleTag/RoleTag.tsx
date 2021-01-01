@@ -23,8 +23,8 @@ const RoleTag = ({
     size="sm"
     variant="subtle"
     colorScheme={selected || !onClick ? color : 'white'}
-    onClick={onClick ? () => onClick(id) : undefined}
-    role={onClick ? 'button' : undefined}
+    onClick={onClick && (() => onClick(id))}
+    role={onClick && 'button'}
     {...otherProps}
   >
     <TagLeftIcon as={icon} />
