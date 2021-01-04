@@ -22,7 +22,7 @@ module.exports = {
       ],
     });
 
-    config.plugins.push(new Dotenv());
+    config.plugins.push(new Dotenv(), new webpack.EnvironmentPlugin());
 
     return {
       ...config,
