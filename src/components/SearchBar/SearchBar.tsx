@@ -1,35 +1,29 @@
-import React, { useCallback } from 'react';
-import { InputRightElement } from '@chakra-ui/react';
+import React from 'react';
+import { InputRightElement, Input, InputGroup } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { StyledInput, StyledInputGroup } from './SearchBar.styles';
 
 export interface SearchBarProps {
   onChange: (value: string) => void;
+  onSearch: () => void;
   value: string;
 }
 
-const SearchBar = ({ onChange, value }: SearchBarProps) => {
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      onChange(e.target.value);
-    },
-    [onChange],
-  );
-
-  return (
-    <StyledInputGroup>
-      <StyledInput
-        variant="unstyled"
-        placeholder="Search"
-        size="lg"
-        onChange={handleChange}
-        value={value}
-      />
-      <InputRightElement>
-        <SearchIcon />
-      </InputRightElement>
-    </StyledInputGroup>
-  );
-};
+const SearchBar = ({ onChange, onSearch, value }: SearchBarProps) => (
+  <InputGroup>
+    <Input
+      variant="unstyled"
+      placeholder="Search"
+      onChange={(e) => onChange(e.target.value)}
+      value={value}
+      boxShadow="md"
+      size="lg"
+      padding="12px 30px"
+      rounded="3xl"
+    />
+    <InputRightElement onClick={onSearch}>
+      <SearchIcon marginTop="8px" marginRight="30px" boxSize={5} />
+    </InputRightElement>
+  </InputGroup>
+);
 
 export default SearchBar;
