@@ -3,7 +3,7 @@
     "dev": "snowpack dev",
     "start": "yarn env:vercel && vercel dev --listen 3000",
     "env:vercel": "vercel env pull",
-    "env:local": "printenv | grep -E '\bSNOWPACK_PUBLIC' >> .env",
+    "env:local": "printenv >> .env",
     "setup": "vercel login && yarn env:vercel",
     "deploy:production": "vercel --prod",
     "build": "yarn env:local && yarn build:app && yarn build:storybook",
