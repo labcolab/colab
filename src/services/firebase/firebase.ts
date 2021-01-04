@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
+import 'firebase/auth';
 import { createContext } from 'react';
 import { v4 as generateId } from 'uuid';
 import * as FirebaseTypes from './types';
@@ -19,6 +20,31 @@ class Firebase {
   firestore = firebase.firestore();
 
   storage = firebase.storage().ref();
+
+  auth = firebase.auth();
+
+  async signUp(email: string, password: string) {
+    const user = await this.auth.createUserWithEmailAndPassword(
+      email,
+      password,
+    );
+    console.log(user);
+    return user;
+  }
+
+  async signIn(email: string, password: string) {
+    const user = await this.auth.signInWithEmailAndPassword(email, password);
+    console.log(user);
+    return user;
+  }
+
+  async signInWithGoogle() {
+    const user = await this.auth.signInWithPopup(
+      new firebase.auth.GoogleAuthProvider(),
+    );
+    console.log(user);
+    return user;
+  }
 
   async storeImages(selectedFiles: File[]): Promise<string[]> {
     if (selectedFiles) {
