@@ -2,6 +2,8 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
 import { createContext } from 'react';
+import { v4 as generateId } from 'uuid';
+import * as FirebaseTypes from './types';
 
 const env = import.meta.env || process.env;
 
@@ -11,13 +13,47 @@ const firebaseConfig = {
   projectId: env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: env.SNOWPACK_PUBLIC_FIREBASE_STORAGE_BUCKET,
 };
-
 firebase.initializeApp(firebaseConfig);
 
-const FirebaseStuff = {
-  firestore: firebase.firestore(),
-  storage: firebase.storage().ref(),
-};
-export default FirebaseStuff;
+class Firebase {
+  firestore = firebase.firestore();
 
-export const FirebaseContext = createContext(FirebaseStuff);
+  storage = firebase.storage().ref();
+
+  async storeImages(selectedFiles: File[]): Promise<string[]> {
+    if (selectedFiles) {
+      const snapshotPromises: firebase.storage.UploadTask[] = [];
+      selectedFiles.forEach((file) => {
+        const id = generateId();
+        const extension = file.name.substr(file.name.lastIndexOf('.'));
+        const newFilename = id + extension;
+        const childRef = this.storage.child(newFilename);
+        snapshotPromises.push(childRef.put(file));
+      });
+      const snapshots = await Promise.all(snapshotPromises);
+      const urlPromises: Promise<string>[] = [];
+      snapshots.forEach(({ ref }) => {
+        urlPromises.push(ref.getDownloadURL());
+      });
+      const urls = await Promise.all(urlPromises);
+      return urls;
+    }
+    return [];
+  }
+
+  async addProject(project: FirebaseTypes.PostType) {
+    const { title, description, roles, images } = project;
+    const doc = await this.firestore
+      .collection(FirebaseTypes.Collections.Posts)
+      .add({
+        title,
+        description,
+        roles,
+        images,
+      });
+    return doc;
+  }
+}
+
+export default Firebase;
+export const FirebaseContext = createContext<Firebase>({} as Firebase);

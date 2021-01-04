@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Welcome from './pages/Welcome/Welcome';
 import Test from './pages/Test/Test';
-import FirebaseStuff, { FirebaseContext } from './services/firebase/firebase';
+import Firebase, { FirebaseContext } from './services/firebase/firebase';
 
 const App = () => (
-  <FirebaseContext.Provider value={FirebaseStuff}>
+  <FirebaseContext.Provider value={new Firebase()}>
     <Switch>
       <Route exact path="/" component={Welcome} />
       <Route path="/dashboard" component={Home} />

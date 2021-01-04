@@ -2,21 +2,21 @@ import React from 'react';
 import { Image, Box, IconButton, BoxProps } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 
-export interface ImagesInterface {
-  id: string;
-  image: string;
+export interface ModifiableImageListProps extends Omit<BoxProps, 'onClick'> {
+  images: File[];
+  onClick?: (fileToRemove: File) => void;
 }
 
-export interface ImageSliderProps extends Omit<BoxProps, 'onClick'> {
-  images: ImagesInterface[];
-  onClick?: (fileId: string) => void;
-}
-
-const ImageSlider = ({ images, onClick, ...otherProps }: ImageSliderProps) => (
+const ModifiableImageList = ({
+  images,
+  onClick,
+  ...otherProps
+}: ModifiableImageListProps) => (
   <Box display="block" textAlign="left" {...otherProps}>
-    {images.map((img) => (
+    {images.map((img, i) => (
       <Box
-        key={img.id}
+        // eslint-disable-next-line react/no-array-index-key
+        key={i}
         width="100px"
         height="70px"
         display="inline-block"
@@ -24,8 +24,8 @@ const ImageSlider = ({ images, onClick, ...otherProps }: ImageSliderProps) => (
         position="relative"
       >
         <Image
-          src={img.image}
-          alt={img.image}
+          src={URL.createObjectURL(img)}
+          alt="uploaded image"
           objectFit="cover"
           width="100%"
           height="100%"
@@ -41,11 +41,11 @@ const ImageSlider = ({ images, onClick, ...otherProps }: ImageSliderProps) => (
           size="xs"
           borderRadius="full"
           colorScheme="orange"
-          onClick={onClick ? () => onClick(img.id) : undefined}
+          onClick={onClick ? () => onClick(img) : undefined}
         />
       </Box>
     ))}
   </Box>
 );
 
-export default ImageSlider;
+export default ModifiableImageList;

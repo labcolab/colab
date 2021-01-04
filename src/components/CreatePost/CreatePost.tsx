@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import {
   FormControl,
   Input,
@@ -14,18 +14,14 @@ import {
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import { FirebaseContext } from '../../services/firebase/firebase';
-import ImageSlider, { ImagesInterface } from '../ImageSlider/ImageSlider';
+import ModifiableImageList from './ModifiableImageList';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
 import { ImageUploadIcon } from '../../assets/icons';
+import type * as FirebaseTypes from '../../services/firebase/types';
 
 const maxTitleChars = 30;
 const maxDescrChars = 300;
-
-interface FilesInterface {
-  id: string;
-  file: File;
-}
 
 const defaultSelectedRoles = Object.values(roles).reduce(
   (acc, { id }) => ({
@@ -54,34 +50,16 @@ const CreatePost = () => {
     }));
   };
 
-  const { firestore, storage } = useContext(FirebaseContext);
+  const firebase = useContext(FirebaseContext);
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [selectedFiles, setSelectedFiles] = useState<FilesInterface[]>([]);
-  const [selectedImages, setSelectedImages] = useState<ImagesInterface[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [showForm, setShowForm] = useState<boolean>(true);
   const [titleChars, setTitleChars] = useState<number>(maxTitleChars);
   const [descrChars, setDescrChars] = useState<number>(maxDescrChars);
 
-  const fileInput = React.createRef<HTMLInputElement>();
-
-  const storeImages = async () => {
-    let urls: string[] = [];
-    if (selectedFiles) {
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const childRef = storage.child(selectedFiles[i].file.name);
-        const snapshot = await childRef.put(selectedFiles[i].file);
-        const url = await snapshot.ref.getDownloadURL();
-        urls = [...urls, url];
-        console.log(
-          `i: ${i}, id: ${selectedFiles[i].id}, file: ${selectedFiles[i].file.name}, url: ${url}`,
-        );
-      }
-      console.log('done!');
-    }
-    return urls;
-  };
+  const fileInput = useRef<HTMLInputElement>();
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -91,22 +69,21 @@ const CreatePost = () => {
     );
 
     try {
-      const urls = await storeImages();
+      const urls = await firebase.storeImages(selectedFiles);
 
-      const doc = await firestore.collection('projects').add({
+      const project: FirebaseTypes.PostType = {
         title,
         description,
         roles: savedRoles,
         images: urls,
-      });
-      console.log(`saved doc with id: ${doc.id}`);
+      };
+      const doc = await firebase.addProject(project);
     } catch (err) {
       console.log(`error saving doc: ${err}`);
     }
     setTitle('');
     setDescription('');
     setSelectedFiles([]);
-    setSelectedImages([]);
     setSelectedRoles(defaultSelectedRoles);
     console.log('DONE!');
   };
@@ -118,23 +95,11 @@ const CreatePost = () => {
   };
 
   const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inFiles = e.target.files;
-    if (inFiles) {
-      Array.from(inFiles).map((file) => {
-        const id = Math.random().toString(36).substr(2, 9);
-        const url = URL.createObjectURL(file);
-        setSelectedFiles((files) => [...files, { id, file }]);
-        setSelectedImages((images) => [...images, { id, image: url }]);
-      });
-    }
+    setSelectedFiles(Array.from(e.target.files ?? []));
   };
 
-  const handleFileRemoved = (fileId: string) => {
-    const newFiles = selectedFiles.filter((file) => file.id !== fileId);
-    const newImages = selectedImages.filter((image) => image.id !== fileId);
-    setSelectedFiles(newFiles);
-    setSelectedImages(newImages);
-    console.log(`removed file: ${fileId}`);
+  const handleFileRemoved = (fileToRemove: File) => {
+    setSelectedFiles((files) => files.filter((file) => file !== fileToRemove));
   };
 
   const handleClosed = () => {
@@ -229,9 +194,9 @@ const CreatePost = () => {
                 </Text>
               </FormControl>
 
-              {selectedImages.length && (
-                <ImageSlider
-                  images={selectedImages}
+              {selectedFiles.length && (
+                <ModifiableImageList
+                  images={selectedFiles}
                   width="100%"
                   onClick={handleFileRemoved}
                 />
