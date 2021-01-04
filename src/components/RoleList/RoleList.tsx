@@ -1,8 +1,9 @@
 import React from 'react';
+import { BoxProps, Box } from '@chakra-ui/react';
 import type { RolesInterface, SelectedRolesInterface } from '../RoleTag/roles';
-import { StyledRoleTag, StyledContainer } from './RoleList.styles';
+import RoleTag from '../RoleTag/RoleTag';
 
-export interface RoleListProps {
+export interface RoleListProps extends Omit<BoxProps, 'onSelect'> {
   roles: RolesInterface;
   selectedRoles: SelectedRolesInterface;
   onSelect?: (roleId: string) => void;
@@ -14,10 +15,11 @@ const RoleList = ({
   selectedRoles,
   onSelect,
   onRemove,
+  ...otherProps
 }: RoleListProps) => (
-  <StyledContainer>
-    {Object.values(roles).map(({ role, color, icon, id, className }) => (
-      <StyledRoleTag
+  <Box {...otherProps}>
+    {Object.values(roles).map(({ role, color, icon, id }) => (
+      <RoleTag
         key={id}
         id={id}
         role={role}
@@ -25,10 +27,10 @@ const RoleList = ({
         icon={icon}
         selected={selectedRoles[id]}
         onClick={selectedRoles[id] ? onRemove : onSelect}
-        className={className}
+        marginRight="12px"
       />
     ))}
-  </StyledContainer>
+  </Box>
 );
 
 export default RoleList;
