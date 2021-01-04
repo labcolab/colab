@@ -59,7 +59,7 @@ const CreatePost = () => {
   const [titleChars, setTitleChars] = useState<number>(maxTitleChars);
   const [descrChars, setDescrChars] = useState<number>(maxDescrChars);
 
-  const fileInput = useRef<HTMLInputElement>();
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
