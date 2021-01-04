@@ -1,17 +1,18 @@
 {
   "scripts": {
     "dev": "snowpack dev",
-    "start": "yarn env && vercel dev --listen 3000",
-    "env": "vercel env pull",
-    "setup": "vercel login && yarn env",
+    "start": "yarn env:vercel && vercel dev --listen 3000",
+    "env:vercel": "vercel env pull",
+    "env:local": "printenv | grep -E '\bSNOWPACK_PUBLIC' >> .env",
+    "setup": "vercel login && yarn env:vercel",
     "deploy:production": "vercel --prod",
-    "build": "printenv >> .env && yarn build:app && yarn build:storybook",
+    "build": "yarn env:local && yarn build:app && yarn build:storybook",
     "build:app": "snowpack build",
     "build:storybook": "build-storybook -o build/storybook --quiet",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-    "storybook": "yarn env && start-storybook -p 6006",
+    "storybook": "yarn env:vercel && start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
