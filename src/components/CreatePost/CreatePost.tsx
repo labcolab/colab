@@ -50,6 +50,8 @@ const CreatePost = () => {
     }));
   };
 
+  console.log(import.meta.env.SNOWPACK_PUBLIC_ABC);
+
   const firebase = useContext(FirebaseContext);
 
   const [title, setTitle] = useState<string>('');
