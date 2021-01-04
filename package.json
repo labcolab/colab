@@ -5,13 +5,13 @@
     "env": "vercel env pull",
     "setup": "vercel login && yarn env",
     "deploy:production": "vercel --prod",
-    "build": "yarn build:app && yarn build:storybook",
+    "build": "printenv >> .env && yarn build:app && yarn build:storybook",
     "build:app": "snowpack build",
     "build:storybook": "build-storybook -o build/storybook --quiet",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "yarn env && start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
