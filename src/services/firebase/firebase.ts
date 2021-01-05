@@ -23,18 +23,16 @@ class Firebase {
 
   auth = firebase.auth();
 
-  async signUp(email: string, password: string) {
+  async signUpWithEmail(email: string, password: string) {
     const user = await this.auth.createUserWithEmailAndPassword(
       email,
       password,
     );
-    console.log(user);
     return user;
   }
 
-  async signIn(email: string, password: string) {
+  async signInWithEmail(email: string, password: string) {
     const user = await this.auth.signInWithEmailAndPassword(email, password);
-    console.log(user);
     return user;
   }
 
@@ -42,7 +40,11 @@ class Firebase {
     const user = await this.auth.signInWithPopup(
       new firebase.auth.GoogleAuthProvider(),
     );
-    console.log(user);
+    return user;
+  }
+
+  async signOut() {
+    const user = await this.auth.signOut();
     return user;
   }
 

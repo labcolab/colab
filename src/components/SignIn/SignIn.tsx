@@ -15,15 +15,20 @@ const SignIn = () => {
 
   const firebase = useContext(FirebaseContext);
 
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+  };
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      const doc = firebase.signIn(email, password);
+      const doc = await firebase.signInWithEmail(email, password);
       console.log(doc);
     } catch (err) {
-      console.log(`error: ${err}`);
+      console.log(err);
     }
+    resetForm();
   };
 
   return (
