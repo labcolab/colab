@@ -6,6 +6,7 @@ import {
   Input,
   FormLabel,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 
@@ -15,15 +16,34 @@ const SignIn = () => {
 
   const firebase = useContext(FirebaseContext);
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+  };
 
+  const handleSignInGoogle = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
     try {
-      const doc = firebase.signIn(email, password);
+      const doc = await firebase.signInWithGoogle();
+      console.log('Signed in with Google!');
       console.log(doc);
     } catch (err) {
-      console.log(`error: ${err}`);
+      console.log(`Failed sign in with Google: ${err}`);
     }
+    resetForm();
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const doc = await firebase.signInWithEmail(email, password);
+      console.log(doc);
+    } catch (err) {
+      console.log(err);
+    }
+    resetForm();
   };
 
   return (
@@ -35,7 +55,7 @@ const SignIn = () => {
       borderRadius={8}
       boxShadow="lg"
     >
-      <Text fontSize="xl" textAlign="center">
+      <Text fontSize="xl" textAlign="center" color="orange.500">
         Sign In
       </Text>
       <form onSubmit={handleFormSubmit}>
@@ -62,9 +82,38 @@ const SignIn = () => {
             fontSize="md"
           />
         </FormControl>
-        <Button mt={4} type="submit" colorScheme="orange" margin="auto 0">
-          Sign In
-        </Button>
+        <VStack spacing={4}>
+          <Button
+            type="submit"
+            colorScheme="orange"
+            margin="auto 0"
+            width="100%"
+          >
+            Sign In
+          </Button>
+
+          <Text
+            width="100%"
+            textAlign="center"
+            borderBottom="1px solid"
+            lineHeight="0.5px"
+            my="10px"
+          >
+            <Box as="span" px="10px" background="white">
+              OR
+            </Box>
+          </Text>
+
+          <Button
+            onClick={handleSignInGoogle}
+            variant="outline"
+            colorScheme="orange"
+            margin="auto 0"
+            width="100%"
+          >
+            Register with Google
+          </Button>
+        </VStack>
       </form>
     </Box>
   );
