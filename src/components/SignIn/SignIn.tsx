@@ -32,6 +32,20 @@ const SignIn = () => {
     resetForm();
   };
 
+  const handleSignInGoogle = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    try {
+      const doc = await firebase.signInWithGoogle();
+      console.log('Signed up with Google!');
+      console.log(doc);
+    } catch (err) {
+      console.log(`Failed sign up with Google: ${err}`);
+    }
+    resetForm();
+  };
+
   return (
     <Box
       py="8px"
@@ -89,6 +103,16 @@ const SignIn = () => {
               OR
             </Box>
           </Text>
+
+          <Button
+            onClick={handleSignInGoogle}
+            variant="outline"
+            colorScheme="orange"
+            margin="auto 0"
+            width="100%"
+          >
+            Register with Google
+          </Button>
         </VStack>
       </form>
     </Box>
