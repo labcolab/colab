@@ -63,7 +63,11 @@ const SignUp = () => {
       borderRadius={8}
       boxShadow="lg"
     >
+<<<<<<< HEAD
       <Text fontSize="xl" textAlign="center" color="orange.500">
+=======
+      <Text fontSize="xl" textAlign="center" color="orange">
+>>>>>>> 33eb17e98e023e3d6537119ef0c974809bec9f4e
         Create Your Account
       </Text>
       <form onSubmit={handleFormSubmit}>

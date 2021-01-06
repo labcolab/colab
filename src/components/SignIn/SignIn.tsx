@@ -21,20 +21,6 @@ const SignIn = () => {
     setPassword('');
   };
 
-  const handleSignInGoogle = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    e.preventDefault();
-    try {
-      const doc = await firebase.signInWithGoogle();
-      console.log('Signed in with Google!');
-      console.log(doc);
-    } catch (err) {
-      console.log(`Failed sign in with Google: ${err}`);
-    }
-    resetForm();
-  };
-
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -103,16 +89,6 @@ const SignIn = () => {
               OR
             </Box>
           </Text>
-
-          <Button
-            onClick={handleSignInGoogle}
-            variant="outline"
-            colorScheme="orange"
-            margin="auto 0"
-            width="100%"
-          >
-            Register with Google
-          </Button>
         </VStack>
       </form>
     </Box>
