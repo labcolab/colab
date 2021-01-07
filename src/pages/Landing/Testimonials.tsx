@@ -68,9 +68,7 @@ const Testimonial = ({
 );
 
 const LandingTestimonials = () => {
-  const baseOrSm = useBreakpointValue({ base: true, md: false });
   const base = useBreakpointValue({ base: true, sm: false });
-  const CustomStack = baseOrSm ? VStack : HStack;
   const CustomSignBox = base ? (VStack as typeof Flex) : Flex;
   return (
     <Box w="100%">
@@ -169,7 +167,7 @@ const LandingTestimonials = () => {
               <Text fontSize="lg">Register your account now!</Text>
             </VStack>
             <Spacer />
-            <CustomStack>
+            <Stack direction={{ base: 'column', md: 'row' }}>
               <Link to="/signup" style={{ border: 'none' }}>
                 <Box
                   display="inline-block"
@@ -208,7 +206,7 @@ const LandingTestimonials = () => {
                   Sign in
                 </Box>
               </Link>
-            </CustomStack>
+            </Stack>
           </CustomSignBox>
         </VStack>
       </Container>
