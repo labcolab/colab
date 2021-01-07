@@ -69,7 +69,7 @@ const Testimonial = ({
 
 const LandingTestimonials = () => {
   const base = useBreakpointValue({ base: true, sm: false });
-  const CustomSignBox = base ? (VStack as typeof Flex) : Flex;
+  const CustomSignBox = (base ? VStack : Flex) as typeof Box;
   return (
     <Box w="100%">
       <Container maxW="5xl" centerContent py={20}>
