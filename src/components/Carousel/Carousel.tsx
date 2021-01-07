@@ -33,7 +33,7 @@ const Carousel = ({
     setTabIndex((index) => (index + 1) % totalTabs);
     setSlideForward(true);
   };
-  const decrememntTabIndex = () => {
+  const decrementTabIndex = () => {
     setTabIndex((index) => (index - 1 + totalTabs) % totalTabs);
     setSlideForward(false);
   };
@@ -48,7 +48,7 @@ const Carousel = ({
         p={2}
         bgColor="white"
         role="button"
-        onClick={decrememntTabIndex}
+        onClick={decrementTabIndex}
       />
       <Box
         zIndex={-1}

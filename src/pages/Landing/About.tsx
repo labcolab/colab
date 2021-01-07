@@ -111,7 +111,7 @@ const LandingAbout = () => (
           <Text fontSize="4xl">So... What is this platform all about?</Text>
           <Text fontSize="lg" color="gray.500">
             TL;DR Well... it’s basically like Pinterest, but for students
-            looking to do digital project.
+            looking to do a digital project.
           </Text>
         </VStack>
         <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }}>

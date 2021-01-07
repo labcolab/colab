@@ -4,6 +4,7 @@ import {
   Box,
   HStack,
   VStack,
+  Stack,
   Text,
   SimpleGrid,
   useBreakpointValue,
@@ -15,6 +16,56 @@ import Carousel, { CarouselItem } from '../../components/Carousel/Carousel';
 import FemaleImage from '../../assets/images/FemaleImage';
 import CardsImage from '../../assets/images/CardsImage';
 import BarsImage from '../../assets/images/BarsImage';
+
+interface TestimonialProps {
+  image: React.ElementType;
+  testimonial: string;
+  name: string;
+  identity: string;
+}
+
+const Testimonial = ({
+  image: TestimonialImage,
+  testimonial,
+  name,
+  identity,
+}: TestimonialProps) => (
+  <Stack direction={{ base: 'column', md: 'row' }}>
+    <SimpleGrid>
+      <Box
+        w={{ base: '100%', md: '350px' }}
+        transform={{
+          base: 'skew(-20deg) translateX(-25px)',
+          md: 'skew(-20deg) translateX(-50px)',
+        }}
+        background={{ base: '#00000000', md: '#E6F0FF' }}
+        gridArea="1 / 1"
+      />
+      <TestimonialImage
+        zIndex={2}
+        w="200px"
+        h="200px"
+        gridArea="1 / 1"
+        mx={{ base: 'auto', md: 10 }}
+        paddingTop={4}
+      />
+    </SimpleGrid>
+    <VStack
+      spacing={1}
+      align="left"
+      p={8}
+      paddingTop={{ base: 0, md: 2, lg: 4 }}
+    >
+      <Text py={4} fontSize="lg">
+        “{testimonial}”
+      </Text>
+      <Text fontWeight="500">{name}</Text>
+      <Text fontSize="sm" color="gray.500">
+        {identity}
+      </Text>
+    </VStack>
+  </Stack>
+);
 
 const LandingTestimonials = () => {
   const baseOrSm = useBreakpointValue({ base: true, md: false });
@@ -37,39 +88,29 @@ const LandingTestimonials = () => {
             bgColor="white"
           >
             <CarouselItem>
-              <CustomStack>
-                <SimpleGrid>
-                  <Box
-                    w={{ base: '100%', md: '350px' }}
-                    transform={`skew(-20deg) translateX(${
-                      baseOrSm ? '-25px' : '-50px'
-                    })`}
-                    background={{ base: '#00000000', md: '#E6F0FF' }}
-                    gridArea="1 / 1"
-                  />
-                  <FemaleImage
-                    zIndex={2}
-                    w="350px"
-                    h="200px"
-                    gridArea="1 / 1"
-                    mx={-8}
-                    paddingTop={4}
-                  />
-                </SimpleGrid>
-                <VStack spacing={1} align="left" p={8} paddingTop={0}>
-                  <Text py={4} fontSize="lg">
-                    “Colab is a fantastic way to buff up my portfolio while
-                    meeting new friends!”
-                  </Text>
-                  <Text fontWeight="500">Shelly Wang</Text>
-                  <Text fontSize="sm" color="gray.500">
-                    3rd Year Student at The University of British Columbia
-                  </Text>
-                </VStack>
-              </CustomStack>
+              <Testimonial
+                image={FemaleImage}
+                testimonial="Colab is a fantastic way to buff up my portfolio while meeting new friends!"
+                name="Shelly Wang"
+                identity="3rd Year Student at The University of British Columbia"
+              />
             </CarouselItem>
-            <CarouselItem>Hello 2</CarouselItem>
-            <CarouselItem>Hello 3</CarouselItem>
+            <CarouselItem>
+              <Testimonial
+                image={FemaleImage}
+                testimonial="Colab helped me find project partners really quickly"
+                name="Andrew Fletcher"
+                identity="2nd Year Student at The University of British Columbia"
+              />
+            </CarouselItem>
+            <CarouselItem>
+              <Testimonial
+                image={FemaleImage}
+                testimonial="As someone who struggles with approaching people, Colab helped me to get into projects."
+                name="Harnoor Singh"
+                identity="4th Year Student at The University of British Columbia"
+              />
+            </CarouselItem>
           </Carousel>
 
           <SimpleGrid columns={{ base: 1, md: 2 }} w="100%" px={4} spacing={8}>
