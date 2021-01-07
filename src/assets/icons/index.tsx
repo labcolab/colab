@@ -13,7 +13,6 @@ import HeartIcon from './HeartIcon';
 import LeftTriangleIcon from './LeftTriangeIcon';
 import RightTriangleIcon from './RightTriangleIcon';
 
-
 export {
   AndroidIcon,
   DatabaseIcon,

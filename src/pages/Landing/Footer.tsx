@@ -87,7 +87,7 @@ const LandingFooter = () => (
     </Container>
     <Box
       position="absolute"
-      bottom="400px"
+      bottom={{ base: '800px', sm: '600px', md: '400px' }}
       left={0}
       width={0}
       height={0}
@@ -101,7 +101,7 @@ const LandingFooter = () => (
       bottom={0}
       left={0}
       width="100%"
-      height="400px"
+      height={{ base: '800px', sm: '600px', md: '400px' }}
       bgColor="#FCFAF6"
       zIndex={-1000}
       overflow="hidden"
