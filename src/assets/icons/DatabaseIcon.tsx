@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from '@chakra-ui/icons';
 
 export default (props: any) => (
-  <Icon viewBox="0 0 13 12" {...props}>
+  <Icon viewBox="0 0 13 12" fill="currentColor" {...props}>
     <path
       fillRule="evenodd"
       clipRule="evenodd"

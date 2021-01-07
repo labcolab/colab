@@ -2,16 +2,14 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Landing from './pages/Landing/Landing';
-import CreateProject from './pages/CreateProject/CreateProject';
 import Test from './pages/Test/Test';
-import Firestore, { FirestoreContext } from './services/firestore/firestore';
+import Firebase, { FirebaseContext } from './services/firebase/firebase';
 
 const App = () => (
-  <FirestoreContext.Provider value={Firestore}>
+  <FirebaseContext.Provider value={new Firebase()}>
     <Switch>
       <Route exact path="/" component={Landing} />
       <Route path="/dashboard" component={Home} />
-      <Route path="/create" component={CreateProject} />
       <Route path="/test" component={Test} />
       <Route
         path="/stories"
@@ -21,7 +19,7 @@ const App = () => (
         }}
       />
     </Switch>
-  </FirestoreContext.Provider>
+  </FirebaseContext.Provider>
 );
 
 export default App;

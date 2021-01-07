@@ -21,6 +21,7 @@ const RoleTag = ({
 }: RoleTagProps) => (
   <Tag
     size="sm"
+    borderRadius="full"
     variant="subtle"
     colorScheme={selected || !onClick ? color : 'white'}
     onClick={onClick && (() => onClick(id))}
@@ -28,7 +29,7 @@ const RoleTag = ({
     {...otherProps}
   >
     <TagLeftIcon as={icon} />
-    <TagLabel>{role}</TagLabel>
+    <TagLabel fontSize="12px">{role}</TagLabel>
   </Tag>
 );
 
