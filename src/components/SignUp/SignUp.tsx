@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 
-const SignUp = () => {
+const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -185,5 +185,5 @@ const SignUpLink = () => {
   )
 }
 
-export default SignUp;
-export { SignUp, SignUpLink }
+export default SignUpForm;
+export { SignUpForm, SignUpLink }
