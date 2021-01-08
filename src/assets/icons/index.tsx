@@ -9,7 +9,9 @@ import WindowCodeIcon from './WindowCodeIcon';
 import ImageUploadIcon from './ImageUploadIcon';
 import MessagesIcon from './MessagesIcon';
 import NotificationIcon from './NotificationIcon';
-
+import HeartIcon from './HeartIcon';
+import LeftTriangleIcon from './LeftTriangeIcon';
+import RightTriangleIcon from './RightTriangleIcon';
 
 export {
   AndroidIcon,
@@ -23,4 +25,7 @@ export {
   ImageUploadIcon,
   MessagesIcon,
   NotificationIcon,
+  HeartIcon,
+  LeftTriangleIcon,
+  RightTriangleIcon,
 };
