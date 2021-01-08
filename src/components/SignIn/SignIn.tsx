@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 
-const SignInForm = () => {
+const SignIn = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -82,14 +82,14 @@ const SignInForm = () => {
             fontSize="md"
           />
         </FormControl>
-        <VStack spacing={4}>
+        <VStack spacing={6} my="25px">
           <Button
             type="submit"
             colorScheme="orange"
             margin="auto 0"
             width="100%"
           >
-            Sign In
+            Continue
           </Button>
 
           <Text
@@ -97,7 +97,6 @@ const SignInForm = () => {
             textAlign="center"
             borderBottom="1px solid"
             lineHeight="0.5px"
-            my="10px"
           >
             <Box as="span" px="10px" background="white">
               OR
@@ -111,7 +110,7 @@ const SignInForm = () => {
             margin="auto 0"
             width="100%"
           >
-            Register with Google
+            Continue with Google
           </Button>
         </VStack>
       </form>
@@ -119,4 +118,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default SignIn;

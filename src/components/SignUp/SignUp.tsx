@@ -11,13 +11,14 @@ import {
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 
-const SignUpForm = () => {
+const SignUp = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
   const firebase = useContext(FirebaseContext);
 
@@ -33,10 +34,13 @@ const SignUpForm = () => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (password !== confirmPassword) {
+        throw new Error('Passwords do not match!');
+      }
       const doc = await firebase.signUpWithEmail(email, password);
-      console.log(doc);
+      setError('');
     } catch (err) {
-      console.log(err);
+      setError(err.message || err);
     }
     resetForm();
   };
@@ -47,10 +51,9 @@ const SignUpForm = () => {
     e.preventDefault();
     try {
       const doc = await firebase.signInWithGoogle();
-      console.log('Signed up with Google!');
-      console.log(doc);
+      setError('');
     } catch (err) {
-      console.log(`Failed sign up with Google: ${err}`);
+      setError(err.message);
     }
     resetForm();
   };
@@ -142,7 +145,9 @@ const SignUpForm = () => {
           </FormControl>
         </HStack>
 
-        <VStack spacing={4}>
+        {error && <Box>{error}</Box>}
+
+        <VStack spacing={6} my="25px">
           <Button
             type="submit"
             colorScheme="orange"
@@ -157,7 +162,6 @@ const SignUpForm = () => {
             textAlign="center"
             borderBottom="1px solid"
             lineHeight="0.5px"
-            my="10px"
           >
             <Box as="span" px="10px" background="white">
               OR
@@ -171,7 +175,7 @@ const SignUpForm = () => {
             margin="auto 0"
             width="100%"
           >
-            Register with Google
+            Continue with Google
           </Button>
         </VStack>
       </form>
@@ -179,11 +183,7 @@ const SignUpForm = () => {
   );
 };
 
-const SignUpLink = () => {
-  return (
-    <p>Don't have an account yet? Sign up HERE</p>
-  )
-}
+const SignUpLink = () => <p>Don't have an account yet? Sign up HERE</p>;
 
-export default SignUpForm;
-export { SignUpForm, SignUpLink }
+export default SignUp;
+export { SignUpLink };
