@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FirebaseContext } from '../../services/firebase/firebase';
 
-const SignIn = () => {
+const SignInForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -118,4 +118,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInForm;
