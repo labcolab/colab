@@ -1,6 +1,14 @@
-import React from 'react';
-import SignUpForm, { SignUpLink } from '../../components/SignUpForm/SignUpForm';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
+import { AuthContext } from '../../services/auth/auth';
+import SignUpForm from '../../components/SignUpForm/SignUpForm';
 
-export default function HomePage() {
+const SignUpPage = () => {
+  const { user } = useContext(AuthContext);
+  if (user) {
+    return <Redirect to="/" />;
+  }
   return <SignUpForm />;
-}
+};
+
+export default SignUpPage;
