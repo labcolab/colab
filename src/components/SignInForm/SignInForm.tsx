@@ -8,13 +8,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FirebaseContext } from '../../services/firebase/firebase';
+import { AuthContext } from '../../services/auth/auth';
 
 const SignInForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const firebase = useContext(FirebaseContext);
+  const { signInWithEmail, signInWithGoogle } = useContext(AuthContext);
 
   const resetForm = () => {
     setEmail('');
@@ -24,7 +24,7 @@ const SignInForm = () => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const doc = await firebase.signInWithEmail(email, password);
+      const doc = await signInWithEmail(email, password);
       console.log(doc);
     } catch (err) {
       console.log(err);
@@ -37,7 +37,7 @@ const SignInForm = () => {
   ) => {
     e.preventDefault();
     try {
-      const doc = await firebase.signInWithGoogle();
+      const doc = await signInWithGoogle();
       console.log('Signed up with Google!');
       console.log(doc);
     } catch (err) {

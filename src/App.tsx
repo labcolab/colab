@@ -5,25 +5,31 @@ import Welcome from './pages/Welcome/Welcome';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import Test from './pages/Test/Test';
-import Firebase, { FirebaseContext } from './services/firebase/firebase';
+import { AuthProvider } from './services/auth/auth';
+import { StorageProvider } from './services/storage/storage';
+import { DatabaseProvider } from './services/database/database';
 
 const App = () => (
-  <FirebaseContext.Provider value={new Firebase()}>
-    <Switch>
-      <Route exact path="/" component={Welcome} />
-      <Route path="/dashboard" component={Home} />
-      <Route path="/signin" component={SignIn} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/test" component={Test} />
-      <Route
-        path="/stories"
-        component={() => {
-          window.location.href = '/storybook/';
-          return null;
-        }}
-      />
-    </Switch>
-  </FirebaseContext.Provider>
+  <AuthProvider>
+    <StorageProvider>
+      <DatabaseProvider>
+        <Switch>
+          <Route exact path="/" component={Welcome} />
+          <Route path="/dashboard" component={Home} />
+          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/test" component={Test} />
+          <Route
+            path="/stories"
+            component={() => {
+              window.location.href = '/storybook/';
+              return null;
+            }}
+          />
+        </Switch>
+      </DatabaseProvider>
+    </StorageProvider>
+  </AuthProvider>
 );
 
 export default App;

@@ -1,14 +1,14 @@
 // eslint-disable-next-line react/jsx-props-no-spreading
 import React from 'react';
 import type { Story, Meta } from '@storybook/react';
-import SignIn from './SignIn';
+import SignUpForm from './SignUpForm';
 
 export default {
-  title: 'Components/SignIn',
-  component: SignIn,
+  title: 'Components/SignUpForm',
+  component: SignUpForm,
 } as Meta;
 
-const Template: Story = (args) => <SignIn {...args} />;
+const Template: Story = (args) => <SignUpForm {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {};

@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FirebaseContext } from '../../services/firebase/firebase';
+import { AuthContext } from '../../services/auth/auth';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -20,7 +20,7 @@ const SignUpForm = () => {
   const [userName, setUserName] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-  const firebase = useContext(FirebaseContext);
+  const { signUpWithEmail, signInWithGoogle } = useContext(AuthContext);
 
   const resetForm = () => {
     setEmail('');
@@ -37,7 +37,7 @@ const SignUpForm = () => {
       if (password !== confirmPassword) {
         throw new Error('Passwords do not match!');
       }
-      const doc = await firebase.signUpWithEmail(email, password);
+      const doc = await signUpWithEmail(email, password);
       setError('');
     } catch (err) {
       setError(err.message || err);
@@ -50,7 +50,7 @@ const SignUpForm = () => {
   ) => {
     e.preventDefault();
     try {
-      const doc = await firebase.signInWithGoogle();
+      const doc = await signInWithGoogle();
       setError('');
     } catch (err) {
       setError(err.message);
@@ -185,5 +185,5 @@ const SignUpForm = () => {
 
 const SignUpLink = () => <p>Don't have an account yet? Sign up HERE</p>;
 
-export default SignUpForm;
 export { SignUpLink };
+export default SignUpForm;

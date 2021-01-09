@@ -1,13 +1,12 @@
 import React from 'react';
-import SignIn from '../../components/SignIn/SignIn';
-import { SignUpForm, SignUpLink } from '../../components/SignUp/SignUp';
+import SignInForm from '../../components/SignInForm/SignInForm';
+import { SignUpLink } from '../../components/SignUpForm/SignUpForm';
 
 export default function HomePage() {
   return (
     <div>
-      <SignIn />,
+      <SignInForm />,
       <SignUpLink />
     </div>
-
   );
 }
