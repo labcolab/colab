@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "snowpack dev",
-    "start": "yarn env:vercel && vercel dev --listen 3000",
+    "start": "yarn env:vercel && vercel dev",
     "env:vercel": "vercel env pull",
     "env:local": "printenv >> .env",
     "setup": "vercel login && yarn env:vercel",
