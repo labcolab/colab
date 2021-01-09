@@ -1,6 +1,5 @@
 import React, { ReactNode, createContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { History } from 'history';
 import firebase from 'firebase/app';
 import useLocalStorage from '../../utils/useLocalStorage';
 import { auth } from '../firebase/firebase';
@@ -17,48 +16,47 @@ interface AuthData {
 export const AuthContext = createContext<AuthData>({} as AuthData);
 
 interface AuthProviderProps {
-  history: History;
   children: ReactNode;
 }
 
-export const AuthProvider = useHistory(
-  ({ history, ...props }: AuthProviderProps) => {
-    const [user, setUser] = useLocalStorage<firebase.User | null>('null', null);
+export const AuthProvider = (props: AuthProviderProps) => {
+  const [user, setUser] = useLocalStorage<firebase.User | null>('null', null);
+  const history = useHistory();
 
-    const signUpWithEmail = async (email: string, password: string) => {
-      await auth.createUserWithEmailAndPassword(email, password);
-    };
+  const signUpWithEmail = async (email: string, password: string) => {
+    await auth.createUserWithEmailAndPassword(email, password);
+    history.push('/');
+  };
 
-    const signInWithEmail = async (email: string, password: string) => {
-      await auth.signInWithEmailAndPassword(email, password);
-      history.push('/');
-    };
+  const signInWithEmail = async (email: string, password: string) => {
+    await auth.signInWithEmailAndPassword(email, password);
+    history.push('/');
+  };
 
-    const signInWithGoogle = async () => {
-      await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      history.push('/');
-    };
+  const signInWithGoogle = async () => {
+    await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    history.push('/');
+  };
 
-    const signOut = async () => {
-      await auth.signOut();
-      history.push('/');
-    };
+  const signOut = async () => {
+    await auth.signOut();
+    history.push('/');
+  };
 
-    useEffect(() => {
-      auth.onAuthStateChanged(setUser);
-    }, []);
+  useEffect(() => {
+    auth.onAuthStateChanged(setUser);
+  }, []);
 
-    return (
-      <AuthContext.Provider
-        {...props}
-        value={{
-          user,
-          signUpWithEmail,
-          signInWithEmail,
-          signInWithGoogle,
-          signOut,
-        }}
-      />
-    );
-  },
-);
+  return (
+    <AuthContext.Provider
+      {...props}
+      value={{
+        user,
+        signUpWithEmail,
+        signInWithEmail,
+        signInWithGoogle,
+        signOut,
+      }}
+    />
+  );
+};
