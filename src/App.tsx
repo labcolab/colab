@@ -6,7 +6,7 @@ import Test from './pages/Test/Test';
 import Firebase, { FirebaseContext } from './services/firebase/firebase';
 
 const App = () => (
-  <FirebaseContext.Provider value={new Firebase()}>
+  <FirebaseContext.Providreer value={new Firebase()}>
     <Switch>
       <Route exact path="/" component={Landing} />
       <Route path="/dashboard" component={Home} />

@@ -9,6 +9,7 @@ context('Actions', () => {
   });
 
   it('Load date correctly from go', () => {
+    cy.debug();
     cy.get('[data-test-id="date"]', { timeout: 10000 }).contains('December');
   });
 });

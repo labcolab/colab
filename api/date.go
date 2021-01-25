@@ -1,4 +1,4 @@
-package date
+package colab
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 // /date/now --> now
 // /date/foo --> foo
 
-//need to make it so that /date/* to go to one function --> need to condense subURLs!
+// Date need to make it so that /date/* to go to one function --> need to condense subURLs!
 func Date(w http.ResponseWriter, r *http.Request) {
 
 	rh := requesthandler.New(r)

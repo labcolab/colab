@@ -34,6 +34,11 @@ func handleRequest(path string, rh *RequestHandler, callback requestCallback) {
 			return
 		}
 
+		switch request.Method {
+		case "POST", "PATCH", "PUT":
+			request.ParseForm()
+		}
+
 		callback()
 
 		rh.RequestComplete = true
