@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Landing from './pages/Landing/Landing';
+import SignIn from './pages/SignIn/SignIn';
+import SignOut from './pages/SignOut/SignOut';
+import SignUp from './pages/SignUp/SignUp';
 import Test from './pages/Test/Test';
 import ChooseRoles from './pages/ChooseRoles/ChooseRoles';
-import Firebase, { FirebaseContext } from './services/firebase/firebase';
+import { AuthContext } from './services/auth/auth';
 
-const App = () => (
-  <FirebaseContext.Provider value={new Firebase()}>
+const App = () => {
+  const { user } = useContext(AuthContext);
+  return (
     <Switch>
-      <Route exact path="/" component={Landing} />
+      <Route exact path="/" component={user ? Test : Landing} />
       <Route path="/dashboard" component={Home} />
+      <Route path="/signin" component={SignIn} />
+      <Route path="/signup" component={SignUp} />
+      <Route path="/signout" component={SignOut} />
       <Route path="/test" component={Test} />
       <Route path="/roles" component={ChooseRoles} />
       <Route
@@ -21,7 +28,7 @@ const App = () => (
         }}
       />
     </Switch>
-  </FirebaseContext.Provider>
-);
+  );
+};
 
 export default App;

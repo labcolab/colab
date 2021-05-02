@@ -7,57 +7,28 @@ import useRoleSelection from '../../hooks/useRoleSelection';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { FirebaseContext } from '../../services/firebase/firebase';
 import type * as FirebaseTypes from '../../services/firebase/types';
+import { DatabaseContext } from '../../services/database/database';
 
-// const defaultSelectedRoles = Object.values(roles).reduce(
-//   (acc, { id }) => ({
-//     ...acc,
-//     [id]: false,
-//   }),
-//   {},
-// );
 
 const ChooseRoles = () => {
-  const firebase = useContext(FirebaseContext);
   const { selectedRoles, handleRoleRemoved, handleRoleSelected } = useRoleSelection();
-  // const [selectedRoles, setSelectedRoles] = useState<SelectedRolesInterface>(
-  //   defaultSelectedRoles,
-  // );
-  // const handleRoleSelected = (roleId: string) => {
-  //   setSelectedRoles((currentSelectedRoles) => ({
-  //     ...currentSelectedRoles,
-  //     [roleId]: true,
-  //   }));
-  // };
-  //
-  // const handleRoleRemoved = (roleId: string) => {
-  //   setSelectedRoles((currentSelectedRoles) => ({
-  //     ...currentSelectedRoles,
-  //     [roleId]: false,
-  //   }));
-  // };
-
-  // const updateSelectedRoles = (updatedRoles: SelectedRolesInterface) => {
-  //   setSelectedRoles(updatedRoles);
-  //   console.log(`updated roles:`);
-  //   console.log(updatedRoles)
-  // }
 
   const handleSubmit = async () => {
-    const savedRoles = Object.keys(selectedRoles).filter(
-      (key) => selectedRoles[key] === true,
-    );
-    console.log(`chosen roles: ${savedRoles}`);
-    try {
-      // TODO: change to add roles to an existing user
-      const user: FirebaseTypes.UserType = {
-        email: 'xyz',
-        roles: savedRoles,
-      };
-      const doc = await firebase.createUser(user);
-      console.log(doc);
-    } catch (err) {
-      console.log(`error saving doc: ${err}`);
-    }
+    // const savedRoles = Object.keys(selectedRoles).filter(
+    //   (key) => selectedRoles[key] === true,
+    // );
+    // console.log(`chosen roles: ${savedRoles}`);
+    // try {
+    //   // TODO: change to add roles to an existing user
+    //   const user: FirebaseTypes.UserType = {
+    //     email: 'xyz',
+    //     roles: savedRoles,
+    //   };
+    //   const doc = await firebase.createUser(user);
+    //   console.log(doc);
+    // } catch (err) {
+    //   console.log(`error saving doc: ${err}`);
+    // }
   };
 
   return (

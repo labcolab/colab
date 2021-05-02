@@ -7,7 +7,7 @@ export interface RoleTagProps extends Omit<TagProps, 'onClick'> {
   color: string;
   icon: React.ElementType;
   selected?: boolean;
-  size: string;
+  size?: string;
   onClick?: (id: string) => void;
 }
 
@@ -18,11 +18,11 @@ const RoleTag = ({
   icon,
   selected,
   onClick,
-  size = 'sm',
+  size,
   ...otherProps
 }: RoleTagProps) => (
   <Tag
-    size={size}
+    size={size || 'sm'}
     borderRadius="full"
     variant="subtle"
     colorScheme={selected || !onClick ? color : 'white'}
