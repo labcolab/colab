@@ -1,6 +1,9 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import Firebase, { FirebaseContext } from '../src/services/firebase/firebase';
+import { AuthProvider } from '../src/services/auth/auth';
+import { StorageProvider } from '../src/services/storage/storage';
+import { DatabaseProvider } from '../src/services/database/database';
+
 import theme from '../src/theme';
 
 export const parameters = {
@@ -9,10 +12,14 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ChakraProvider resetCSS theme={theme}>
-      <FirebaseContext.Provider value={new Firebase()}>
-        <Story />
-      </FirebaseContext.Provider>
-    </ChakraProvider>
+    <AuthProvider>
+      <StorageProvider>
+        <DatabaseProvider>
+          <ChakraProvider resetCSS theme={theme}>
+            <Story />
+          </ChakraProvider>
+        </DatabaseProvider>
+      </StorageProvider>
+    </AuthProvider>
   ),
 ];

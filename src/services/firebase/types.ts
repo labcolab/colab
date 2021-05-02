@@ -4,10 +4,3 @@ export enum Collections {
   Posts = 'posts',
   Users = 'users',
 }
-
-export interface PostType {
-  title: string;
-  description: string;
-  roles: string[];
-  images: string[];
-}

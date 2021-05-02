@@ -13,7 +13,8 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import { FirebaseContext } from '../../services/firebase/firebase';
+import { StorageContext } from '../../services/storage/storage';
+import { DatabaseContext } from '../../services/database/database';
 import ModifiableImageList from './ModifiableImageList';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
@@ -50,7 +51,8 @@ const CreatePost = () => {
     }));
   };
 
-  const firebase = useContext(FirebaseContext);
+  const { storeImages } = useContext(StorageContext);
+  const { createPost } = useContext(DatabaseContext);
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -69,15 +71,13 @@ const CreatePost = () => {
     );
 
     try {
-      const urls = await firebase.storeImages(selectedFiles);
-
-      const project: FirebaseTypes.PostType = {
+      const urls = await storeImages(selectedFiles);
+      await createPost({
         title,
         description,
         roles: savedRoles,
         images: urls,
-      };
-      const doc = await firebase.addProject(project);
+      });
     } catch (err) {
       console.log(`error saving doc: ${err}`);
     }

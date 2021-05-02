@@ -6,11 +6,21 @@ import theme from './theme';
 import App from './App';
 import './index.css';
 
+import { AuthProvider } from './services/auth/auth';
+import { StorageProvider } from './services/storage/storage';
+import { DatabaseProvider } from './services/database/database';
+
 ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <StorageProvider>
+            <DatabaseProvider>
+              <App />
+            </DatabaseProvider>
+          </StorageProvider>
+        </AuthProvider>
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>,
