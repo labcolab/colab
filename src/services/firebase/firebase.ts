@@ -41,8 +41,8 @@ class Firebase {
     return [];
   }
 
-  async addProject(project: FirebaseTypes.PostType) {
-    const { title, description, roles, images } = project;
+  async createPost(post: FirebaseTypes.PostType) {
+    const { title, description, roles, images } = post;
     const doc = await this.firestore
       .collection(FirebaseTypes.Collections.Posts)
       .add({
@@ -51,6 +51,12 @@ class Firebase {
         roles,
         images,
       });
+    return doc;
+  }
+
+  async createUser(user: FirebaseTypes.UserType) {
+    const doc = await this.firestore.collection(FirebaseTypes.Collections.Users)
+      .add(user);
     return doc;
   }
 }

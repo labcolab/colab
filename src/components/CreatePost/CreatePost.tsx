@@ -77,7 +77,7 @@ const CreatePost = () => {
         roles: savedRoles,
         images: urls,
       };
-      const doc = await firebase.addProject(project);
+      const doc = await firebase.createPost(project);
     } catch (err) {
       console.log(`error saving doc: ${err}`);
     }

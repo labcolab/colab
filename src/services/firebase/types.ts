@@ -11,3 +11,8 @@ export interface PostType {
   roles: string[];
   images: string[];
 }
+
+export interface UserType {
+  email: string;
+  roles: string[];
+}

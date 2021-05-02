@@ -8,6 +8,7 @@ export interface RoleListProps extends Omit<BoxProps, 'onSelect'> {
   selectedRoles: SelectedRolesInterface;
   onSelect?: (roleId: string) => void;
   onRemove?: (roleId: string) => void;
+  roleSize: string;
 }
 
 const RoleList = ({
@@ -15,6 +16,7 @@ const RoleList = ({
   selectedRoles,
   onSelect,
   onRemove,
+  roleSize,
   ...otherProps
 }: RoleListProps) => (
   <Box {...otherProps}>
@@ -28,6 +30,8 @@ const RoleList = ({
         selected={selectedRoles[id]}
         onClick={selectedRoles[id] ? onRemove : onSelect}
         marginRight="12px"
+        my="10px"
+        size={roleSize}
       />
     ))}
   </Box>
