@@ -8,12 +8,12 @@ import SignUp from './pages/SignUp/SignUp';
 import Test from './pages/Test/Test';
 import ChooseRoles from './pages/ChooseRoles/ChooseRoles';
 import { AuthContext } from './services/auth/auth';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 const App = () => {
-  const { user } = useContext(AuthContext);
   return (
     <Switch>
-      <Route exact path="/" component={user ? Test : Landing} />
+      <PrivateRoute exact path="/" component={Test} alternative={Landing} />
       <Route path="/dashboard" component={Home} />
       <Route path="/signin" component={SignIn} />
       <Route path="/signup" component={SignUp} />

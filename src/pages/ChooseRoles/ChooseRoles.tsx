@@ -1,44 +1,55 @@
-import React, { useContext, useState } from 'react';
-import { Box, Container, Heading, IconButton, Text, VStack } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import {
+  Box,
+  Container,
+  Heading,
+  IconButton,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import RoleList from '../../components/RoleList/RoleList';
-// import RoleSelection from '../../components/RoleSelection/RoleSelection';
 import roles from '../../components/RoleTag/roles';
 import useRoleSelection from '../../hooks/useRoleSelection';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { FirebaseContext } from '../../services/firebase/firebase';
-import type * as FirebaseTypes from '../../services/firebase/types';
 import { DatabaseContext } from '../../services/database/database';
-
+import { AuthContext } from '../../services/auth/auth';
+import { useHistory } from 'react-router';
 
 const ChooseRoles = () => {
-  const { selectedRoles, handleRoleRemoved, handleRoleSelected } = useRoleSelection();
+  const { user } = useContext(AuthContext);
+  const { setUserRoles } = useContext(DatabaseContext);
+  const {
+    selectedRoles,
+    handleRoleRemoved,
+    handleRoleSelected,
+  } = useRoleSelection();
+  // const [rolesError, setRolesError] = useState<string>('');
+
+  const history = useHistory();
 
   const handleSubmit = async () => {
-    // const savedRoles = Object.keys(selectedRoles).filter(
-    //   (key) => selectedRoles[key] === true,
-    // );
-    // console.log(`chosen roles: ${savedRoles}`);
-    // try {
-    //   // TODO: change to add roles to an existing user
-    //   const user: FirebaseTypes.UserType = {
-    //     email: 'xyz',
-    //     roles: savedRoles,
-    //   };
-    //   const doc = await firebase.createUser(user);
-    //   console.log(doc);
-    // } catch (err) {
-    //   console.log(`error saving doc: ${err}`);
-    // }
+    const savedRoles = Object.keys(selectedRoles).filter(
+      (key) => selectedRoles[key] === true,
+    );
+    console.log(`chosen roles: ${savedRoles}`);
+    try {
+      await setUserRoles(user!.uid, savedRoles);
+      history.push('/categories');
+    } catch (err) {
+      console.log(`error saving doc: ${err}`);
+    }
   };
-
   return (
     <Box>
       <Container maxW="6xl" centerContent py={20}>
         <VStack spacing={12}>
           <VStack spacing={4}>
-            <Heading color="orangeText">What type of digital collaborator are you?</Heading>
+            <Heading color="orangeText">
+              What type of digital collaborator are you?
+            </Heading>
             <Text fontSize="md" color="gray.500">
-              This can be viewed publicly in your profile. Choose a maximum of 3.
+              This can be viewed publicly in your profile. Choose a maximum of
+              3.
             </Text>
           </VStack>
           <RoleList

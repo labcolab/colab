@@ -34,7 +34,7 @@ const useRoleSelection = () => {
     console.log(`removed: ${roleId}`);
   }, []);
 
-  console.log(selectedRoles);
+  // console.log(selectedRoles);
 
   return { selectedRoles, handleRoleRemoved, handleRoleSelected };
 };

@@ -1,17 +1,20 @@
 import React, { ReactNode, createContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
 import useLocalStorage from '../../utils/useLocalStorage';
 import { auth } from '../firebase/firebase';
 import 'firebase/auth';
-
+import { createUser } from '../database/database';
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
 interface AuthData {
   user: firebase.User | null;
-  signUpWithEmail: (email: string, password: string) => Promise<void>;
-  signInWithEmail: (email: string, password: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
+  signUpWithEmail: (
+    email: string,
+    password: string,
+    name: string,
+  ) => Promise<string>;
+  signInWithEmail: (email: string, password: string) => Promise<string>;
+  signInWithGoogle: () => Promise<string>;
   signOut: () => Promise<void>;
 }
 
@@ -21,16 +24,28 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const signUpWithEmail = async (email: string, password: string) => {
-  await auth.createUserWithEmailAndPassword(email, password);
+const signUpWithEmail = async (
+  email: string,
+  password: string,
+  name: string,
+) => {
+  const { user } = await auth.createUserWithEmailAndPassword(email, password);
+  await user?.updateProfile({ displayName: name });
+  await createUser(user as firebase.User);
+  return user?.uid as string;
 };
 
 const signInWithEmail = async (email: string, password: string) => {
-  await auth.signInWithEmailAndPassword(email, password);
+  const { user } = await auth.signInWithEmailAndPassword(email, password);
+  return user?.uid as string;
 };
 
 const signInWithGoogle = async () => {
-  await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  const { user } = await auth.signInWithPopup(
+    new firebase.auth.GoogleAuthProvider(),
+  );
+  await createUser(user as firebase.User);
+  return user?.uid as string;
 };
 
 const signOut = async () => {
@@ -41,7 +56,10 @@ export const AuthProvider = (props: AuthProviderProps) => {
   const [user, setUser] = useLocalStorage<firebase.User | null>('user', null);
 
   useEffect(() => {
-    auth.onAuthStateChanged(setUser);
+    auth.onAuthStateChanged((userObj) => {
+      setUser(userObj);
+      console.log({ userObj });
+    });
   }, []);
 
   return (

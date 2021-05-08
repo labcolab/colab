@@ -10,25 +10,22 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { AuthContext } from '../../services/auth/auth';
+import { useHistory } from 'react-router';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [userName, setUserName] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [error, setError] = useState<string>('');
-
   const { signUpWithEmail, signInWithGoogle } = useContext(AuthContext);
+  const history = useHistory();
 
   const resetForm = () => {
     setEmail('');
     setPassword('');
     setConfirmPassword('');
-    setFirstName('');
-    setLastName('');
-    setUserName('');
+    setName('');
   };
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,8 +34,9 @@ const SignUpForm = () => {
       if (password !== confirmPassword) {
         throw new Error('Passwords do not match!');
       }
-      const doc = await signUpWithEmail(email, password);
+      await signUpWithEmail(email, password, name);
       setError('');
+      history.push('/');
     } catch (err) {
       setError(err.message || err);
     }
@@ -50,13 +48,16 @@ const SignUpForm = () => {
   ) => {
     e.preventDefault();
     try {
-      const doc = await signInWithGoogle();
+      await signInWithGoogle();
       setError('');
+      console.log('signup with google');
+      history.push('/');
     } catch (err) {
       setError(err.message);
     }
     resetForm();
   };
+
   return (
     <Box
       py="20px"
@@ -107,38 +108,14 @@ const SignUpForm = () => {
           />
         </FormControl>
 
-        <FormControl py="8px" isRequired>
-          <FormLabel htmlFor="userName">Username</FormLabel>
-          <Input
-            id="userName"
-            placeholder="Enter username here"
-            onChange={(e) => setUserName(e.currentTarget.value)}
-            value={userName || ''}
-            variant="outline"
-            fontSize="md"
-          />
-        </FormControl>
-
         <HStack spacing="24px">
           <FormControl py="8px" isRequired>
-            <FormLabel htmlFor="firstName">First Name</FormLabel>
+            <FormLabel htmlFor="name">Name</FormLabel>
             <Input
-              id="firstName"
-              placeholder="First Name"
-              onChange={(e) => setFirstName(e.currentTarget.value)}
-              value={firstName || ''}
-              variant="outline"
-              fontSize="md"
-            />
-          </FormControl>
-
-          <FormControl py="8px" isRequired>
-            <FormLabel htmlFor="lastName">Last Name</FormLabel>
-            <Input
-              id="lastName"
-              placeholder="Last Name"
-              onChange={(e) => setLastName(e.currentTarget.value)}
-              value={lastName || ''}
+              id="name"
+              placeholder="Name"
+              onChange={(e) => setName(e.currentTarget.value)}
+              value={name || ''}
               variant="outline"
               fontSize="md"
             />
