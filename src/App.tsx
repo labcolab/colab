@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Landing from './pages/Landing/Landing';
 import SignIn from './pages/SignIn/SignIn';
@@ -10,16 +10,18 @@ import ChooseRoles from './pages/ChooseRoles/ChooseRoles';
 import { AuthContext } from './services/auth/auth';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
+const RedirectToHome = () => <Redirect to="/" />;
+
 const App = () => {
   return (
     <Switch>
       <PrivateRoute exact path="/" component={Test} alternative={Landing} />
       <Route path="/dashboard" component={Home} />
-      <Route path="/signin" component={SignIn} />
-      <Route path="/signup" component={SignUp} />
+      <PrivateRoute path="/signin" component={RedirectToHome} alternative={SignIn} />
+      <PrivateRoute path="/signup" component={RedirectToHome} alternative={SignUp} />
       <Route path="/signout" component={SignOut} />
       <Route path="/test" component={Test} />
-      <Route path="/roles" component={ChooseRoles} />
+      <PrivateRoute path="/roles" component={ChooseRoles} alternative={RedirectToHome} />
       <Route
         path="/stories"
         component={() => {

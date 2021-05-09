@@ -31,7 +31,11 @@ const defaultSelectedRoles = Object.values(roles).reduce(
   {},
 );
 
-const CreatePost = () => {
+export interface CreatePostProps {
+  uid: string;
+}
+
+const CreatePost = ({uid}: CreatePostProps) => {
   const [selectedRoles, setSelectedRoles] = useState<SelectedRolesInterface>(
     defaultSelectedRoles,
   );
@@ -76,6 +80,8 @@ const CreatePost = () => {
         description,
         roles: savedRoles,
         images: urls,
+        ownerId: uid,
+        createdAt: new Date().getTime(),
       });
     } catch (err) {
       console.log(`error saving doc: ${err}`);

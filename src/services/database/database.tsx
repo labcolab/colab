@@ -13,6 +13,8 @@ interface PostType {
   description: string;
   roles: string[];
   images: string[];
+  ownerId: string,
+  createdAt: number
 }
 
 interface DatabaseData {
@@ -29,13 +31,7 @@ interface DatabaseProviderProps {
 }
 
 const createPost = async (post: PostType) => {
-  const { title, description, roles, images } = post;
-  await firestore.collection(Collections.Posts).add({
-    title,
-    description,
-    roles,
-    images,
-  });
+  await firestore.collection(Collections.Posts).add(post);
 };
 
 export const createUser = async (user: firebase.User) => {
