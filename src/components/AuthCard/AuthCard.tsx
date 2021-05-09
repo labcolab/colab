@@ -5,21 +5,27 @@ import {
   FormControl,
   Input,
   FormLabel,
-  HStack,
   Text,
   VStack,
 } from '@chakra-ui/react';
 import { AuthContext } from '../../services/auth/auth';
-import { useHistory } from 'react-router';
 
-const SignUpForm = () => {
+export enum AuthType {
+  SignIn,
+  SignUp,
+}
+
+export interface AuthCardProps {
+  authType: AuthType;
+}
+
+const AuthCard = ({ authType } : AuthCardProps) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const { signUpWithEmail, signInWithGoogle } = useContext(AuthContext);
-  const history = useHistory();
+  const { signUpWithEmail, signInWithGoogle, signInWithEmail } = useContext(AuthContext);
 
   const resetForm = () => {
     setEmail('');
@@ -31,16 +37,18 @@ const SignUpForm = () => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (password !== confirmPassword) {
-        throw new Error('Passwords do not match!');
+      if (authType === AuthType.SignUp) {
+        if (password !== confirmPassword) {
+          throw new Error('Passwords do not match!');
+        }
+        await signUpWithEmail(email, password, name);
+      } else {
+        await signInWithEmail(email, password);
       }
-      await signUpWithEmail(email, password, name);
-      setError('');
-      history.push('/');
     } catch (err) {
       setError(err.message || err);
+      resetForm();
     }
-    resetForm();
   };
 
   const handleSignInGoogle = async (
@@ -49,13 +57,10 @@ const SignUpForm = () => {
     e.preventDefault();
     try {
       await signInWithGoogle();
-      setError('');
-      console.log('signup with google');
-      history.push('/');
     } catch (err) {
       setError(err.message);
+      resetForm();
     }
-    resetForm();
   };
 
   return (
@@ -67,10 +72,21 @@ const SignUpForm = () => {
       borderRadius={8}
       boxShadow="lg"
     >
-      <Text fontSize="xl" textAlign="center" color="orange.500">
-        Create Your Account
-      </Text>
       <form onSubmit={handleFormSubmit}>
+        {authType === AuthType.SignUp ? (
+          <FormControl py="8px" isRequired>
+            <FormLabel htmlFor="name">Name</FormLabel>
+            <Input
+              id="name"
+              placeholder="Name"
+              onChange={(e) => setName(e.currentTarget.value)}
+              value={name || ''}
+              variant="outline"
+              fontSize="md"
+            />
+          </FormControl>
+        ) : null }
+
         <FormControl py="8px" isRequired>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
@@ -80,8 +96,10 @@ const SignUpForm = () => {
             value={email || ''}
             variant="outline"
             fontSize="md"
+            type="email"
           />
         </FormControl>
+
         <FormControl py="8px" isRequired>
           <FormLabel htmlFor="password">Password</FormLabel>
           <Input
@@ -95,32 +113,20 @@ const SignUpForm = () => {
           />
         </FormControl>
 
-        <FormControl py="8px" isRequired>
-          <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-          <Input
-            id="confirmPassword"
-            placeholder="Enter password again here"
-            type="password"
-            onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-            value={confirmPassword || ''}
-            variant="outline"
-            fontSize="md"
-          />
-        </FormControl>
-
-        <HStack spacing="24px">
+        {authType === AuthType.SignUp ? (
           <FormControl py="8px" isRequired>
-            <FormLabel htmlFor="name">Name</FormLabel>
+            <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
             <Input
-              id="name"
-              placeholder="Name"
-              onChange={(e) => setName(e.currentTarget.value)}
-              value={name || ''}
+              id="confirmPassword"
+              placeholder="Enter password again here"
+              type="password"
+              onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+              value={confirmPassword || ''}
               variant="outline"
               fontSize="md"
             />
           </FormControl>
-        </HStack>
+        ) : null}
 
         {error && <Box>{error}</Box>}
 
@@ -160,7 +166,4 @@ const SignUpForm = () => {
   );
 };
 
-const SignUpLink = () => <p>Don't have an account yet? Sign up HERE</p>;
-
-export { SignUpLink };
-export default SignUpForm;
+export default AuthCard;

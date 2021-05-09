@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Redirect, Route, RouteProps, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../services/auth/auth';
 import { firestore } from '../../services/firebase/firebase';
 import { Collections } from '../../services/database/database';
@@ -8,31 +8,43 @@ const InitialComponent = () => <></>;
 const RedirectRoles = () => <Redirect to="/roles" />;
 const RedirectCategories = () => <Redirect to="/categories" />;
 
+enum ComponentState {
+  Initial,
+  Default,
+  Alternative,
+  Roles,
+  Categories,
+}
+
 // eslint-disable-next-line max-len
 const completeAuthProcess = async (
   uid: string | undefined,
-  setFinalComponent: Function,
+  setComponentState: Function,
   defaultComponent: any,
   alternative: any,
+  pathName: string,
 ) => {
   const userDocRef = firestore.collection(Collections.Users).doc(uid);
   const userDoc = await userDocRef.get();
-  if (userDoc.exists) {
+  if (uid) {
     const docData = userDoc.data();
     console.log({ docData });
     console.log({ roles: docData?.roles });
     if (!docData?.roles) {
-      setFinalComponent(RedirectRoles);
-      // history.push('/roles');
-    } else if (!docData?.categories) {
-      setFinalComponent(RedirectCategories);
-      // history.push('/categories');
+      if (pathName !== '/roles') {
+        setComponentState(ComponentState.Roles);
+      }
+      setComponentState(ComponentState.Default);
+    } else if (!docData?.categories && pathName !== '/categories') {
+      if (pathName !== '/categories') {
+        setComponentState(ComponentState.Categories);
+      }
+      setComponentState(ComponentState.Default);
     } else {
-      setFinalComponent(defaultComponent);
-      // history.push('/test');
+      setComponentState(ComponentState.Default);
     }
   } else {
-    setFinalComponent(alternative);
+    setComponentState(ComponentState.Alternative);
   }
 };
 
@@ -46,22 +58,25 @@ const PrivateRoute = ({
   ...otherProps
 }: PrivateRouteProps) => {
   const { user } = useContext(AuthContext);
-  const [, setUpdate] = useState(true);
-
-  const ref = useRef(InitialComponent);
-  const FinalComponent = ref.current;
-
-  const setFinalComponent = (newComponent: any) => {
-    ref.current = newComponent;
-    setUpdate((prev) => !prev);
+  const [componentState, setComponentState] = useState<ComponentState>(ComponentState.Initial);
+  const components = {
+    [ComponentState.Initial]: InitialComponent,
+    [ComponentState.Categories]: RedirectCategories,
+    [ComponentState.Roles]: RedirectRoles,
+    [ComponentState.Alternative]: alternative,
+    [ComponentState.Default]: component,
   };
 
+  const location = useLocation();
+
+  console.log({ component, path: location.pathname });
+
   useEffect(() => {
-    completeAuthProcess(user?.uid, setFinalComponent, component, alternative);
+    console.log({ user });
+    completeAuthProcess(user?.uid, setComponentState, component, alternative, location.pathname);
   }, [user]);
 
-  console.log({ ref });
-  return <Route {...otherProps} component={FinalComponent} />;
+  return <Route {...otherProps} component={components[componentState]} />;
 };
 
 export default PrivateRoute;
