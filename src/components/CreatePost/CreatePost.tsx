@@ -19,7 +19,6 @@ import ModifiableImageList from './ModifiableImageList';
 import RoleList from '../RoleList/RoleList';
 import roles, { SelectedRolesInterface } from '../RoleTag/roles';
 import { ImageUploadIcon } from '../../assets/icons';
-import type * as FirebaseTypes from '../../services/firebase/types';
 
 const maxTitleChars = 30;
 const maxDescrChars = 300;
