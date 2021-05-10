@@ -35,12 +35,14 @@ const completeAuthProcess = async (
         setComponentState(ComponentState.Roles);
       }
       setComponentState(ComponentState.Default);
-    } else if (!docData?.categories && pathName !== '/categories') {
-      if (pathName !== '/categories') {
-        setComponentState(ComponentState.Categories);
-      }
-      setComponentState(ComponentState.Default);
-    } else {
+    }
+    // else if (!docData?.categories && pathName !== '/categories') {
+    //   if (pathName !== '/categories') {
+    //     setComponentState(ComponentState.Categories);
+    //   }
+    //   setComponentState(ComponentState.Default);
+    // }
+    else {
       setComponentState(ComponentState.Default);
     }
   } else {

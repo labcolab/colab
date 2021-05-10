@@ -8,7 +8,7 @@ export enum Collections {
   Users = 'users',
 }
 
-interface PostType {
+export interface PostType {
   title: string;
   description: string;
   roles: string[];
@@ -17,9 +17,32 @@ interface PostType {
   createdAt: number
 }
 
+export interface PostData {
+  post: PostType;
+  postId: string;
+}
+
+export interface ProfileInfo {
+  name?: string;
+  email?: string;
+  avatar?: string;
+  username?: string;
+  roles?: string[];
+}
+
+export enum ProfileInfoField {
+  name = 'name',
+  email = 'email',
+  avatar = 'avatar',
+  username = 'username',
+  roles = 'roles',
+}
+
 interface DatabaseData {
   createPost: (post: PostType) => Promise<void>;
   createUser: (user: firebase.User) => Promise<string>;
+  getProfileInfo: (uid: string, fields: ProfileInfoField[]) => Promise<ProfileInfo>;
+  getPosts: (lastPostTimestamp: number | undefined, take: number) => Promise<PostData[]>;
   setUserRoles: (email: string, roles: string[]) => Promise<void>;
   completeAuthProcess: (user: firebase.User, history: History) => Promise<void>;
 }
@@ -34,8 +57,32 @@ const createPost = async (post: PostType) => {
   await firestore.collection(Collections.Posts).add(post);
 };
 
+const getProfileInfo = async (uid: string, fields: ProfileInfoField[]) => {
+  const userDocRef = firestore.collection(Collections.Users).doc(uid);
+  const userDoc = await userDocRef.get();
+  const docData = userDoc.data() ?? {};
+  const profileInfo: ProfileInfo = {};
+  fields.forEach((field) => {
+    profileInfo[field] = docData[field];
+  });
+  return profileInfo;
+};
+
+const getPosts = async (lastPostTimestamp = Number.MAX_SAFE_INTEGER, take = 20) => {
+  const postDocs = await firestore.collection(Collections.Posts)
+    .orderBy('createdAt', 'desc')
+    .startAfter(lastPostTimestamp)
+    .limit(take)
+    .get();
+
+  return postDocs.docs.map<PostData>((postDoc) => ({
+    post: postDoc.data() as PostType,
+    postId: postDoc.id,
+  }));
+};
+
 export const createUser = async (user: firebase.User) => {
-  const { email, uid, displayName } = user;
+  const { email, uid, displayName, photoURL } = user;
   const userDocRef = firestore.collection(Collections.Users).doc(uid);
   const userDoc = await userDocRef.get();
   if (!userDoc.exists) {
@@ -43,6 +90,7 @@ export const createUser = async (user: firebase.User) => {
       email,
       name: displayName,
       username: displayName?.replace(/\s/g, ''),
+      avatar: photoURL,
     });
   }
   return uid;
@@ -77,7 +125,9 @@ export const DatabaseProvider = (props: DatabaseProviderProps) => (
       createPost,
       createUser,
       setUserRoles,
+      getPosts,
       completeAuthProcess,
+      getProfileInfo,
     }}
   />
 );

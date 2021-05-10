@@ -53,7 +53,7 @@ const UserMenu = ({ avatar, name }: UserMenuProps) => {
           <MenuItem>My Profile</MenuItem>
           <MenuItem>My Projects</MenuItem>
           <MenuItem>Settings</MenuItem>
-          <MenuItem onClick={signOut}>Logout</MenuItem>
+          <MenuItem onClick={signOut}>Sign Out</MenuItem>
         </MenuList>
       </Menu>
     </Flex>

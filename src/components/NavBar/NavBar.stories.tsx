@@ -10,4 +10,7 @@ export default {
 const Template: Story<NavBarProps> = (args) => <NavBar {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  test: true,
+  testUid: '4ztp7CuLJ0b2iUMBQVMA6o81fAj1',
+};

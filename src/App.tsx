@@ -9,14 +9,14 @@ import Test from './pages/Test/Test';
 import ChooseRoles from './pages/ChooseRoles/ChooseRoles';
 import { AuthContext } from './services/auth/auth';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 const RedirectToHome = () => <Redirect to="/" />;
 
 const App = () => {
   return (
     <Switch>
-      <PrivateRoute exact path="/" component={Test} alternative={Landing} />
-      <Route path="/dashboard" component={Home} />
+      <PrivateRoute exact path="/" component={Dashboard} alternative={Landing} />
       <PrivateRoute path="/signin" component={RedirectToHome} alternative={SignIn} />
       <PrivateRoute path="/signup" component={RedirectToHome} alternative={SignUp} />
       <Route path="/signout" component={SignOut} />

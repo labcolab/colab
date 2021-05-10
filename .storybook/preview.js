@@ -5,10 +5,12 @@ import { StorageProvider } from '../src/services/storage/storage';
 import { DatabaseProvider } from '../src/services/database/database';
 
 import theme from '../src/theme';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
 };
+
 
 export const decorators = [
   (Story) => (
@@ -16,7 +18,11 @@ export const decorators = [
       <StorageProvider>
         <DatabaseProvider>
           <ChakraProvider resetCSS theme={theme}>
-            <Story />
+            <BrowserRouter>
+              <Switch>
+                <Route component={Story} />
+              </Switch>
+            </BrowserRouter>
           </ChakraProvider>
         </DatabaseProvider>
       </StorageProvider>

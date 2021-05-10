@@ -86,11 +86,10 @@ const CreatePost = ({uid}: CreatePostProps) => {
     } catch (err) {
       console.log(`error saving doc: ${err}`);
     }
-    setTitle('');
-    setDescription('');
-    setSelectedFiles([]);
-    setSelectedRoles(defaultSelectedRoles);
-    console.log('DONE!');
+    // setTitle('');
+    // setDescription('');
+    // setSelectedFiles([]);
+    // setSelectedRoles(defaultSelectedRoles);
   };
 
   const handleFileUpload = async () => {
