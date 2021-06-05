@@ -43,7 +43,7 @@ const Roles: RolesInterface = {
     color: 'pink',
     icon: LayoutIcon,
   },
-  projectManager: {
+  projectmanager: {
     id: 'projectmanager',
     role: 'Project Manager',
     color: 'purple',

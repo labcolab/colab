@@ -13,8 +13,8 @@ export interface PostType {
   description: string;
   roles: string[];
   images: string[];
-  ownerId: string,
-  createdAt: number
+  ownerId: string;
+  createdAt: number;
 }
 
 export interface PostData {
@@ -41,8 +41,15 @@ export enum ProfileInfoField {
 interface DatabaseData {
   createPost: (post: PostType) => Promise<void>;
   createUser: (user: firebase.User) => Promise<string>;
-  getProfileInfo: (uid: string, fields: ProfileInfoField[]) => Promise<ProfileInfo>;
-  getPosts: (lastPostTimestamp: number | undefined, take: number) => Promise<PostData[]>;
+  getProfileInfo: (
+    uid: string,
+    fields: ProfileInfoField[],
+  ) => Promise<ProfileInfo>;
+  getPosts: (
+    lastPostTimestamp: number | undefined,
+    take: number,
+    endAt: number,
+  ) => Promise<PostData[]>;
   setUserRoles: (email: string, roles: string[]) => Promise<void>;
   completeAuthProcess: (user: firebase.User, history: History) => Promise<void>;
 }
@@ -68,10 +75,16 @@ const getProfileInfo = async (uid: string, fields: ProfileInfoField[]) => {
   return profileInfo;
 };
 
-const getPosts = async (lastPostTimestamp = Number.MAX_SAFE_INTEGER, take = 20) => {
-  const postDocs = await firestore.collection(Collections.Posts)
+const getPosts = async (
+  lastPostTimestamp = Number.MAX_SAFE_INTEGER,
+  take = 20,
+  endAt = 0,
+) => {
+  const postDocs = await firestore
+    .collection(Collections.Posts)
     .orderBy('createdAt', 'desc')
     .startAfter(lastPostTimestamp)
+    .endAt(endAt)
     .limit(take)
     .get();
 

@@ -1,13 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Image, Avatar, HStack, VStack, Text, IconButton, Button } from '@chakra-ui/react';
+import {
+  Box,
+  Image,
+  Avatar,
+  HStack,
+  VStack,
+  Text,
+  IconButton,
+  Button,
+} from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { DatabaseContext, PostType, ProfileInfoField } from '../../services/database/database';
+import {
+  DatabaseContext,
+  PostType,
+  ProfileInfoField,
+} from '../../services/database/database';
 import Card, { CardProps } from '../Card/Card';
 import { AuthContext } from '../../services/auth/auth';
 import RoleList from '../RoleList/RoleList';
-import Roles, { RolesInterface, SelectedRolesInterface } from '../RoleTag/roles';
+import Roles, {
+  RolesInterface,
+  SelectedRolesInterface,
+} from '../RoleTag/roles';
 
-interface PostProps extends CardProps {
+export interface PostProps extends CardProps {
   post: PostType;
   postId: string;
   currentUid: string;
@@ -28,11 +44,13 @@ const Post = ({ post, postId, currentUid, ...otherProps }: PostProps) => {
 
   useEffect(() => {
     if (post.ownerId) {
-      getProfileInfo(post.ownerId, [ProfileInfoField.avatar, ProfileInfoField.name])
-        .then((userInfo) => {
-          setName(userInfo.name as string);
-          setAvatar(userInfo.avatar as string);
-        });
+      getProfileInfo(post.ownerId, [
+        ProfileInfoField.avatar,
+        ProfileInfoField.name,
+      ]).then((userInfo) => {
+        setName(userInfo.name as string);
+        setAvatar(userInfo.avatar as string);
+      });
     }
   }, []);
 
@@ -49,8 +67,18 @@ const Post = ({ post, postId, currentUid, ...otherProps }: PostProps) => {
         <HStack>
           <Avatar name={name} src={avatar} />
           <VStack align="left" spacing={0}>
-            <Text fontSize="md" fontWeight={500}>{name}</Text>
-            <Link to={`/post?id=${postId}`}><Text _hover={{ textDecoration: 'underline' }} fontSize="sm" color="gray.600">{getDate(post.createdAt)}</Text></Link>
+            <Text fontSize="md" fontWeight={500}>
+              {name}
+            </Text>
+            <Link to={`/post?id=${postId}`}>
+              <Text
+                _hover={{ textDecoration: 'underline' }}
+                fontSize="sm"
+                color="gray.600"
+              >
+                {getDate(post.createdAt)}
+              </Text>
+            </Link>
           </VStack>
         </HStack>
         <Box
@@ -86,8 +114,7 @@ const Post = ({ post, postId, currentUid, ...otherProps }: PostProps) => {
             </Box>
           ))}
         </Box>
-        {post.ownerId === currentUid
-          || (
+        {post.ownerId === currentUid || (
           <Button
             onClick={handleSendMessage}
             variant="outline"
@@ -97,7 +124,7 @@ const Post = ({ post, postId, currentUid, ...otherProps }: PostProps) => {
           >
             Message
           </Button>
-          )}
+        )}
       </VStack>
     </Card>
   );
